@@ -14,16 +14,16 @@ class LeadListCreate(ListCreateAPIView):
     serializer_class = LeadSerializer
 
 # Trying to create a User version of the view2
-class UserListCreate(ListView):
+class UserListCreate(ListCreateAPIView):
     queryset = User.objects.all()
     template_name = 'users/user_list.html'
     serializer_class = CurrentUserSerializer
     data = serialize("json", User.objects.all())
 
-    # What to (forcefully) render on a GET req
-    def get(self, request, *args, **kwargs):
-        context = {'data': self.data, "dic" : self.queryset.values()}
-        return render(request, self.template_name, context)
+    # # What to (forcefully) render on a GET req
+    # def get(self, request, *args, **kwargs):
+    #     context = {'data': self.data, "dic" : self.queryset.values()}
+    #     return render(request, self.template_name, context)
 
     # Commented out cause not impl yet
     # def post(self, request, *args, **kwargs):
