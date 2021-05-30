@@ -7,6 +7,8 @@ from rest_framework.generics import ListCreateAPIView
 from django.views.generic import (
         ListView,
 )
+from json import dumps
+from django.http import HttpResponse
 # Create your views here.
 
 class LeadListCreate(ListCreateAPIView):
@@ -14,17 +16,23 @@ class LeadListCreate(ListCreateAPIView):
     serializer_class = LeadSerializer
 
 # Trying to create a User version of the view2
-class UserListCreate(ListCreateAPIView):
+class UserListCreate(ListView):
     queryset = User.objects.all()
     template_name = 'users/user_list.html'
     serializer_class = CurrentUserSerializer
     data = serialize("json", User.objects.all())
 
     # # What to (forcefully) render on a GET req
-    # def get(self, request, *args, **kwargs):
-    #     context = {'data': self.data, "dic" : self.queryset.values()}
-    #     return render(request, self.template_name, context)
+    def get(self, request, *args, **kwargs):
+        strData = dumps(self.data)
+        context = {'data': self.data, "dic" : self.queryset.values(), "strData" : strData}
+        # print(strData)
+        return HttpResponse(strData) # String of HTML code
+        # context = {'data': self.data, "dic" : self.queryset.values()}
+        # return render(request, self.template_name, context)
 
     # Commented out cause not impl yet
-    # def post(self, request, *args, **kwargs):
-    #     context = {<fill in stuff>}
+    def post(self, request, *args, **kwargs):
+        strData = dumps(self.data)
+        context = {'data': self.data, "dic" : self.queryset.values(), "strData" : strData}
+        return HttpResponse(strData) # String of HTML code
