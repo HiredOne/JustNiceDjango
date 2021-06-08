@@ -1,0 +1,112 @@
+Get data
+[
+    {
+        "username": "test1",
+        "email": "",
+        "id": 10,
+        "first_name": "test1",
+        "last_name": "name",
+        "password": "pbkdf2_sha256$260000$hSvV6hAqaiCd9jMXf4YXaB$XajNPmbWwt571Yai2BxOd4TascTg+W8V/tHp1UjT/T8="
+    },
+    {
+        "username": "test2",
+        "email": "",
+        "id": 11,
+        "first_name": "Test2",
+        "last_name": "name2",
+        "password": "test123"
+    },
+    {
+        "username": "test11",
+        "email": "",
+        "id": 12,
+        "first_name": "",
+        "last_name": "",
+        "password": "pbkdf2_sha256$260000$qpRoPvUBUJCdK0SdMiGxOj$wv0fV26IdVI/eiUCudPeg+vB88qDz2F11oEslJ5wmY4="
+    }
+]
+
+Test Reg
+{
+        "username": "test20",
+        "email": "",
+        "id": 10,
+        "first_name": "Optional1",
+        "last_name": "Optional2",
+        "password": "somePassword"
+    }
+
+
+Test Login
+{
+        "username": "loginguy2",
+        "password": "somehackablepassword"
+    }
+OR 
+{
+        "username": "test11",
+        "password": "test123"
+    }
+
+Wrong pwd (Check for wrong pwd)
+{
+        "username": "LoginGuy",
+        "password": "somehackablepassword2"
+    }
+User DNE
+{
+        "username": "LoginGuy0",
+        "password": "somehackablepassword2"
+    }
+
+DB Data
+[
+    {
+        "username": "LoginGuy1",
+        "email": "",
+        "id": 1,
+        "first_name": "Login",
+        "last_name": "Dude1",
+        "password": "pbkdf2_sha256$260000$vVYTkdrYyeWCA9LngQRHOl$RfMfUvGmmRIwKJqf8GOTtFOWIBnZy0ys1JNab8MeFMo="
+    },
+    {
+        "username": "loginguy2",
+        "email": "",
+        "id": 10,
+        "first_name": "Optional1",
+        "last_name": "Optional2",
+        "password": "pbkdf2_sha256$260000$X3QcXsfbkDUM8TieLp9V8m$rx4MNCk93duJivXOByPSeNQt0hYRSuBFQMFR6MsOlSg="
+    },
+    {
+        "username": "test2",
+        "email": "",
+        "id": 11,
+        "first_name": "Test2",
+        "last_name": "name2",
+        "password": "test123"
+    },
+    {
+        "username": "test11",
+        "email": "",
+        "id": 12,
+        "first_name": "",
+        "last_name": "",
+        "password": "pbkdf2_sha256$260000$qpRoPvUBUJCdK0SdMiGxOj$wv0fV26IdVI/eiUCudPeg+vB88qDz2F11oEslJ5wmY4="
+    },
+    {
+        "username": "test21",
+        "email": "",
+        "id": 13,
+        "first_name": "",
+        "last_name": "",
+        "password": "pbkdf2_sha256$260000$pHdjqSgG62cwEJBTa4H2Mf$GzZXdzMIS9bNeV8tbm551r4t5RtWk0YSsZK2g+oBRrE="
+    },
+    {
+        "username": "test22",
+        "email": "",
+        "id": 14,
+        "first_name": "",
+        "last_name": "",
+        "password": "pbkdf2_sha256$260000$qpfXD6nvinGsRUSNDL768D$rXHapex0ra+Lnp1BamYewf7+HnmjeMiC9VjLcx2DTkU="
+    }
+]
