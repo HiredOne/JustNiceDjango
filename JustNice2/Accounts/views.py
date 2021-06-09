@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
+from json import dumps
 
 from django.contrib.auth.models import User, UserManager
 from .serializers import UserSerializer
@@ -52,15 +53,18 @@ def login(request, id = 0, *args, **kwargs):
         return JsonResponse(users_serializer.data, safe = False)
     elif request.method == "POST":
         user_data = JSONParser().parse(request)
+        res = {"status" : -1}
         try: 
             user = User.objects.get(username = user_data['username'])
             users_serializer = UserSerializer(user, data = user_data)
-            #print(users_serializer.errors)
-            if user.check_password(user_data['password']):
-                return JsonResponse("User exists", safe = False)
-            return JsonResponse("Wrong Password", safe = False)
+            if user.check_password(user_data['password']) and users_serializer.is_valid():
+                res["status"] = 1
+                res["user"] = users_serializer.data
+                return JsonResponse(res, safe = False)
+            res["status"] = 0
+            return JsonResponse(res, safe = False)
         except:
-            return JsonResponse("User does not exist", safe = False)
+            return JsonResponse(res, safe = False)
 
 @csrf_exempt
 def SaveFile(request):

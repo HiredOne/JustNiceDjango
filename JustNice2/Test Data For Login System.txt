@@ -1,65 +1,7 @@
-Get data
-[
-    {
-        "username": "test1",
-        "email": "",
-        "id": 10,
-        "first_name": "test1",
-        "last_name": "name",
-        "password": "pbkdf2_sha256$260000$hSvV6hAqaiCd9jMXf4YXaB$XajNPmbWwt571Yai2BxOd4TascTg+W8V/tHp1UjT/T8="
-    },
-    {
-        "username": "test2",
-        "email": "",
-        "id": 11,
-        "first_name": "Test2",
-        "last_name": "name2",
-        "password": "test123"
-    },
-    {
-        "username": "test11",
-        "email": "",
-        "id": 12,
-        "first_name": "",
-        "last_name": "",
-        "password": "pbkdf2_sha256$260000$qpRoPvUBUJCdK0SdMiGxOj$wv0fV26IdVI/eiUCudPeg+vB88qDz2F11oEslJ5wmY4="
-    }
-]
+// TEST THE FOLLOWING ON leads/api/user/
 
-Test Reg
-{
-        "username": "test20",
-        "email": "",
-        "id": 10,
-        "first_name": "Optional1",
-        "last_name": "Optional2",
-        "password": "somePassword"
-    }
+// DB Data (GET REQ) (Verification purposes only)
 
-
-Test Login
-{
-        "username": "loginguy2",
-        "password": "somehackablepassword"
-    }
-OR 
-{
-        "username": "test11",
-        "password": "test123"
-    }
-
-Wrong pwd (Check for wrong pwd)
-{
-        "username": "LoginGuy",
-        "password": "somehackablepassword2"
-    }
-User DNE
-{
-        "username": "LoginGuy0",
-        "password": "somehackablepassword2"
-    }
-
-DB Data
 [
     {
         "username": "LoginGuy1",
@@ -110,3 +52,52 @@ DB Data
         "password": "pbkdf2_sha256$260000$qpfXD6nvinGsRUSNDL768D$rXHapex0ra+Lnp1BamYewf7+HnmjeMiC9VjLcx2DTkU="
     }
 ]
+
+// Test Reg (Do a get req before creating. Username cannot repeat) (POST req)
+
+    {
+        "username": "test17",
+        "password": "somehackablepassword"
+    }
+
+// The one above shows the minimum fields needed for a successful user creation. One below are additional fields that can be included
+
+    {
+        "username": "test18",
+        "email": "test@test.com",
+        "id": 0,
+        "first_name": "testguy",
+        "last_name": "18",
+        "password": "somehackablepassword"
+    }
+
+// TEST THE STUFF BELOW ON leads/api/user/login
+// (ALL are POST reqs. GET will just return the entire database)
+
+//Test Login
+{
+        "username": "loginguy2",
+        "password": "somehackablepassword"
+    }
+
+//OR
+
+{
+        "username": "test11",
+        "password": "test123"
+    }
+
+// Wrong pwd (Check for wrong pwd)
+
+{
+        "username": "test11",
+        "password": "test12"
+    }
+
+// User DNE
+
+{
+        "username": "LoginGuy0",
+        "password": "somehackablepassword2"
+    }
+
