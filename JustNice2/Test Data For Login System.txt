@@ -1,4 +1,4 @@
-// TEST THE FOLLOWING ON leads/api/user/
+// TEST THE FOLLOWING ON BASE_URL + user/
 
 // DB Data (GET REQ) (Verification purposes only)
 
@@ -71,7 +71,7 @@
         "password": "somehackablepassword"
     }
 
-// TEST THE STUFF BELOW ON leads/api/user/login
+// TEST THE STUFF BELOW ON BASE_URL + user/login
 // (ALL are POST reqs. GET will just return the entire database)
 
 //Test Login

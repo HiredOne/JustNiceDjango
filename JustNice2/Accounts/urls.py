@@ -13,9 +13,9 @@ app_name = 'Accounts' # Remember to set the app name
 urlpatterns = [
     # path('', home_view, name = 'home'),
     # path('api/lead/', LeadListCreate.as_view()), #CBV 
-    path('api/user/', userApi), #CBV 
-    path('api/user/login/', login),
-    path('api/user/<int:id>/', userApi),
+    path('', userApi), #CBV 
+    path('login/', login),
+    path('<int:id>/', userApi),
     #path('api/SaveFile/', SaveFile)
     url(r'api/SaveFile$', SaveFile),
 ] + static(settings.MEDIA_URL , document_root = settings.MEDIA_ROOT)
