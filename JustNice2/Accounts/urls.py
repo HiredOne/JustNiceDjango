@@ -5,8 +5,6 @@ from .views import userApi, SaveFile, login
 from django.conf.urls.static import static
 from django.conf.urls import url
 from django.conf import settings
-from JustNice2 import settings
-
 
 app_name = 'Accounts' # Remember to set the app name
 
@@ -16,6 +14,6 @@ urlpatterns = [
     path('', userApi), #CBV 
     path('login/', login),
     path('<int:id>/', userApi),
-    #path('api/SaveFile/', SaveFile)
-    url(r'api/SaveFile$', SaveFile),
+    path('uploadphoto/', SaveFile)
+    # url(r'api/saveFile$', SaveFile),
 ] + static(settings.MEDIA_URL , document_root = settings.MEDIA_ROOT)

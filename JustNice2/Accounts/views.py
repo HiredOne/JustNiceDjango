@@ -68,8 +68,8 @@ def login(request, id = 0, *args, **kwargs):
 
 @csrf_exempt
 def SaveFile(request):
-    print(request.FILES)
-    file = request.FILES['myFile']
+    # print(request.FILES)
+    file = request.FILES['pic']
     file_name = default_storage.save(file.name, file)
 
     return JsonResponse(file_name, safe = False)
