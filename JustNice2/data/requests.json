@@ -1,0 +1,90 @@
+/* 
+This file is created for the purpose of finalising all the format
+the requests are to be in.
+*/
+
+/*
+ALL THE VARIABLE NAMINGS MUST BE STRICTLY FOLLOWED FRONT AND BACKEND
+*/
+
+// Login POST, use either format. First one shows min required fields 
+{
+    "username": "LoginGuy1",
+    "password": "somehackablepassword"
+} 
+
+{
+    "username": "LoginGuy1",
+    "email": "",
+    "id": 1,
+    "first_name": "Login",
+    "last_name": "Dude1",
+    "password": "somehackablepassword"
+}
+
+// Reg POST, use either format. First one shows min required fields 
+// Note: Username cannot repeat and password passed in must be raw password
+// Don't worry about id as it automatically be ignored on the backend 
+
+{
+    "username": "loginguy2",
+    "password": "somehackablepassword"
+}
+
+{
+    "username": "test11",
+    "email": "",
+    "id": 10,
+    "first_name": "Optional1",
+    "last_name": "Optional2",
+    "password": "test123"
+}
+
+// Ingred creation POST, all fields are required
+// ingred_name MUST BE UNIQUE 
+
+{
+    "ingred_name": "Beef",
+    "ingred_unit": "g",
+    "ingred_cat": "Meat"
+}
+
+// Ingred validating POST, only ingred_name is required
+// Returns ingredient if it exists, otherwise it returns does not exist
+// NOTE: search must be unique, it returns multiple then django's gonna complain
+{
+    "ingred_name": "Lamb"
+}
+
+// Recipe creation POST with no ingred link 
+// This is sort of a helper function since we need to populate 2 tables
+// Again, follow the variable namings EXACTLY
+{
+    "rec_name": "rec1",
+    "rec_instructions": "Just cook",
+    "cooking_time": "100.0",
+    "serving_pax": "1",
+    "cuisine" : "global",
+    "rec_type": "edible",
+    "isPublished": "True",
+    "user_id": "1"
+}
+
+// Actual recipe creation POST, variable names must follow exactly and 
+// all fields must be included
+// The value for ingredients is another nested json with KVPair of
+// ingred_id : qty
+{
+    "rec_name": "rec1",
+    "rec_instructions": "Just cook",
+    "cooking_time": "100.0",
+    "serving_pax": "1",
+    "cuisine" : "global",
+    "rec_type": "edible",
+    "isPublished": "True",
+    "user_id": "1",
+    "ingredients": {
+        "ingred_id1": "1",
+        "ingred_id2": "2"
+    }
+}
