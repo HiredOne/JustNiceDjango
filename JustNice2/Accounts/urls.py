@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from .views import userApi, SaveFile, login
+from .views import userApi, saveFile, login
 
 from django.conf.urls.static import static
 from django.conf.urls import url
@@ -14,6 +14,5 @@ urlpatterns = [
     path('', userApi), #CBV 
     path('login/', login),
     path('<int:id>/', userApi),
-    path('uploadphoto/', SaveFile)
-    # url(r'api/saveFile$', SaveFile),
+    path('uploadphoto/', saveFile)
 ] + static(settings.MEDIA_URL , document_root = settings.MEDIA_ROOT)

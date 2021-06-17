@@ -5,6 +5,7 @@ from django.http.response import JsonResponse
 from json import dumps
 
 from django.contrib.auth.models import User, UserManager
+from django.contrib.auth import authenticate
 from .serializers import UserSerializer
 
 from django.core.files.storage import default_storage
@@ -19,6 +20,7 @@ def userApi(request, id = 0, *args, **kwargs):
         return JsonResponse(users_serializer.data, safe = False)
     elif request.method == "POST":
         user_data = JSONParser().parse(request)
+        user_data.pop('id', "required_default")
         users_serializer = UserSerializer(data = user_data)
         #print(users_serializer)
         if users_serializer.is_valid():
@@ -55,9 +57,9 @@ def login(request, id = 0, *args, **kwargs):
         user_data = JSONParser().parse(request)
         res = {"status" : -1}
         try: 
-            user = User.objects.get(username = user_data['username'])
+            user = authenticate(username = user_data['username'], password = user_data['password'])
             users_serializer = UserSerializer(user, data = user_data)
-            if user.check_password(user_data['password']) and users_serializer.is_valid():
+            if users_serializer.is_valid():
                 res["status"] = 1
                 res["user"] = users_serializer.data
                 return JsonResponse(res, safe = False)
@@ -67,9 +69,11 @@ def login(request, id = 0, *args, **kwargs):
             return JsonResponse(res, safe = False)
 
 @csrf_exempt
-def SaveFile(request):
+def saveFile(request):
     # print(request.FILES)
-    file = request.FILES['pic']
-    file_name = default_storage.save(file.name, file)
-
-    return JsonResponse(file_name, safe = False)
+    try:
+        file = request.FILES['pic']
+        file_name = default_storage.save(file.name, file)
+        return JsonResponse(file_name, safe = False)
+    except:
+        return JsonResponse("This is a secured page", safe = False)

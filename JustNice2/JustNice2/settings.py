@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 
     # Own apps
     'Accounts',
+    'RecIngred',
 ]
 
 MIDDLEWARE = [
