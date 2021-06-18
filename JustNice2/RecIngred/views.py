@@ -49,7 +49,6 @@ def recNoIngred(request, id = 0, *args, **kwargs):
 @csrf_exempt
 def ingredView(request, id = 0, *args, **kwargs): 
     # No update/delete as this db should be fully created and unedited thereafter
-
     if request.method == "GET":
         ingredients = Ingredient.objects.all()
         # Ingredient.objects.all().delete() # DO NOT UNCOMMENT. THIS IS TO CLEAR THE USER DB
@@ -89,9 +88,9 @@ def verifyIngred(request):
 # Actual recipe creation page
 @csrf_exempt
 def recipeCreation(request): 
+    # Recipe.objects.all().delete() # DO NOT UNCOMMENT. THIS IS TO CLEAR THE USER DB
     if request.method == "GET":
         recipes = Recipe.objects.all()
-        # Recipe.objects.all().delete() # DO NOT UNCOMMENT. THIS IS TO CLEAR THE USER DB
         rec_serializer = RecSerializer(recipes, many = True)
         return JsonResponse(rec_serializer.data, safe = False)
         # return JsonResponse("This page is for creating recipes", safe = False)
@@ -99,20 +98,23 @@ def recipeCreation(request):
         rec_data = JSONParser().parse(request)
         ingredients = rec_data.pop('ingredients') # Take out the ingredients
 
-        # First we create the recipe in Recipe table
+        # First we create/update the recipe in Recipe table
         rec_serializer = RecSerializer(data = rec_data)
         if rec_serializer.is_valid(): # Validate
             rec_data["user_id"] = User.objects.get(id = rec_data["user_id"]) # Get the User for the foreign key
-            Recipe.objects.create(**rec_data) # Create recipe
-            recipe = Recipe.objects.latest('rec_id') # Store for later use
-            # Then we iterate through the ingredients and make all the Requires entry
+            recipe = Recipe(**rec_data) # Create/update recipe
+            recipe.save()
+            res = f"Successfully added {recipe.rec_name}"
+            if Requires.objects.filter(rec_id = recipe.rec_id).exists(): # Delete before update 
+                Requires.objects.filter(rec_id = recipe.rec_id).delete()
+                res = f"Successfully updated {recipe.rec_name}"
             for ingred_id, quantity in ingredients.items():
                 ingredient = Ingredient.objects.get(ingred_id = ingred_id) # Get actual ingredient
                 Requires.objects.create(ingred_id = ingredient, rec_id = recipe, quantity = quantity) # Create Requires entry
-            return JsonResponse(f"Successfully added {recipe.rec_name}", safe = False)
+            return JsonResponse(res, safe = False)
         else: # For debugging 
             print(rec_serializer.errors)
-        return JsonResponse("Failed to add",safe = False)
+    return JsonResponse("Failed to add",safe = False)
 
 # Getting all the recipes of the user 
 @csrf_exempt
@@ -132,13 +134,18 @@ def getFullRecipe(request):
         return JsonResponse("This page is for getting a full recipe with ingredients", safe = False)
     elif request.method == 'POST':
         rec_id = JSONParser().parse(request)['rec_id']
-        recipe = Recipe.objects.filter(rec_id = rec_id)
-        rec_serializer = RecNameIdSerializer(recipe)
-        print(Requires.objects.filter(rec_id = rec_id))
-        ingredients = Requires.objects.filter(rec_id = rec_id).values("ingred_id")
-        print(ingredients.values())
-        ingred_serializer = [] 
-        # for value in ingredients.values():
-        #     ingred_serializer.append(Ingredient.objects.get(ingred_id = value))
-        # print(ingred_serializer)
-        return JsonResponse("Incomplete", safe = False)
+        recipe = Recipe.objects.get(rec_id = rec_id) # First we get the recipe
+        rec_serializer = RecSerializer(recipe)
+        res = rec_serializer.data # Append to final result
+        ingredients = Requires.objects.filter(rec_id = rec_id).values('ingred_id_id', 'quantity') # Then we get all the ingred and qty involved
+        ingred_serializer = []
+        quantity = {}
+        for idPair in ingredients:
+            ingred_serializer.append(Ingredient.objects.get(ingred_id = idPair['ingred_id_id'])) # Collect ingredients 
+            quantity[idPair['ingred_id_id']] = idPair['quantity'] # Store quantity
+        ingred_serializer = IngredSerializer(ingred_serializer, many = True) 
+        for ingredient in ingred_serializer.data: # This is to integrate the quantity into ingredient for readability
+            ingredient['ingred_quantity'] = quantity[ingredient['ingred_id']]
+        res['ingredient'] = ingred_serializer.data # Append to final res
+        return JsonResponse(res, safe = False)
+        # return JsonResponse("Incomplete", safe= False)
