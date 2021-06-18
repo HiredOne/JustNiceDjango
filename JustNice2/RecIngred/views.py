@@ -1,23 +1,23 @@
+from django.core.files.storage import default_storage
+from django.db.models.functions import Length
+from django.http.response import JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
-from rest_framework.parsers import JSONParser
-from django.http.response import JsonResponse, HttpResponse
 from json import dumps
-from django.core.files.storage import default_storage
+from rest_framework.parsers import JSONParser
 
 from django.contrib.auth.models import User
 from .models import *
 from .serializers import *
-from django.db.models.functions import Length
 
 # Create your views here
 
 def home(request):
     return HttpResponse("Home page for rec and ingred")
 
-# Recipe creation with no linking to ingred 
+# Recipe creation with no linking to ingred. THIS IS DEPRECATED
 @csrf_exempt
-def recNoIngredView(request, id = 0, *args, **kwargs):
+def recNoIngred(request, id = 0, *args, **kwargs):
     if request.method == "GET":
         recipes = Recipe.objects.all()
         # Recipe.objects.all().delete() # DO NOT UNCOMMENT. THIS IS TO CLEAR THE USER DB
@@ -96,7 +96,6 @@ def recipeCreation(request):
         return JsonResponse(rec_serializer.data, safe = False)
         # return JsonResponse("This page is for creating recipes", safe = False)
     elif request.method == "POST":
-
         rec_data = JSONParser().parse(request)
         ingredients = rec_data.pop('ingredients') # Take out the ingredients
 
@@ -113,13 +112,33 @@ def recipeCreation(request):
             return JsonResponse(f"Successfully added {recipe.rec_name}", safe = False)
         else: # For debugging 
             print(rec_serializer.errors)
-        # Then we iterate through the ingredients and make all the Requires entry
-        # for ingred_id, quantity in ingredients.items():
-        #     print("I ran6")
-        #     ingredient = Ingredient.objects.get(id = int(ingred_id)) # Get actual ingredient
-        #     print("I ran7")
-        #     Requires.objects.create(ingred_id = ingredient, rec_id = recipe, quantity = quantity) # Create Requires entry
-        #     print("I ran8")
-        # return JsonResponse(f"Successfully added {recipe.rec_name}", safe = False)
-
         return JsonResponse("Failed to add",safe = False)
+
+# Getting all the recipes of the user 
+@csrf_exempt
+def getUserRec(request):
+    if request.method == "GET":
+        return JsonResponse("This page is for getting recipes of a user", safe = False)
+    elif request.method == 'POST':
+        user_id = JSONParser().parse(request)['user_id']
+        recipes = Recipe.objects.filter(user_id = user_id)
+        rec_serializer = RecNameIdSerializer(recipes, many = True)
+        return JsonResponse(rec_serializer.data, safe = False)
+
+# Getting full recipe of the user with ingredients
+@csrf_exempt
+def getFullRecipe(request):
+    if request.method == "GET":
+        return JsonResponse("This page is for getting a full recipe with ingredients", safe = False)
+    elif request.method == 'POST':
+        rec_id = JSONParser().parse(request)['rec_id']
+        recipe = Recipe.objects.filter(rec_id = rec_id)
+        rec_serializer = RecNameIdSerializer(recipe)
+        print(Requires.objects.filter(rec_id = rec_id))
+        ingredients = Requires.objects.filter(rec_id = rec_id).values("ingred_id")
+        print(ingredients.values())
+        ingred_serializer = [] 
+        # for value in ingredients.values():
+        #     ingred_serializer.append(Ingredient.objects.get(ingred_id = value))
+        # print(ingred_serializer)
+        return JsonResponse("Incomplete", safe = False)

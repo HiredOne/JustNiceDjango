@@ -88,3 +88,32 @@ ALL THE VARIABLE NAMINGS MUST BE STRICTLY FOLLOWED FRONT AND BACKEND
         "ingred_id2": "2"
     }
 }
+
+// Recipe getter, this is used to get all recipes belonging to a user
+{
+    "user_id" : "1"
+}
+
+// Full recipe getter, this is used to get an entire recipe with ingredients
+{
+    "rec_id" : "1"
+}
+
+{
+    "rec_detail1" : "",
+    "rec_detail2" : "",
+    "ingred" : {
+        "ingred_id1" : {
+            "ingred_detail1" : "value",
+            "ingred_detail2" : "value",
+        },
+        "ingred_id2" : {
+            "ingred_detail1" : "value",
+            "ingred_detail2" : "value",
+        }
+    },
+    "quantity" : {
+        "ingred_id1" : "qty1",
+        "ingred_id2" : "qty2"
+    }
+}

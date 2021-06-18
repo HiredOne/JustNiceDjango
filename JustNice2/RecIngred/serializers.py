@@ -8,6 +8,11 @@ class RecSerializer(serializers.ModelSerializer):
         model = Recipe
         fields = '__all__'
 
+class RecNameIdSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Recipe
+        fields = ['rec_id', 'rec_name']
+
 class IngredSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
