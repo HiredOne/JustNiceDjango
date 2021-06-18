@@ -10,13 +10,13 @@ from django.conf import settings
 app_name = 'RecIngred' # Remember to set the app name
 
 urlpatterns = [
-    # path('', home_view, name = 'home'),
-    # path('api/lead/', LeadListCreate.as_view()), #CBV 
     path('', home), #CBV 
-    # path('recipe/', recNoIngredView), # Deprecated 
+    # path('recipe/', recNoIngred), # Deprecated 
     # path('recipe/<int:id>/', recNoIngredView), # Deprecated 
-    path ('recipe/', recipeCreation),
-    path('checkingred/', verifyIngred),
-    path('ingred/', ingredView),
+    path ('recipe/', recipeCreation), # For creating recipes
+    path('getallrec/', getUserRec), # Get list of user's recipe
+    path('getfullrec/', getFullRecipe), # Get full recipe
+    path('checkingred/', verifyIngred), # Ingredient validation
+    path('ingred/', ingredView), # Ingredient CRUD
     path('uploadphoto/', saveFile)
 ] + static(settings.MEDIA_URL , document_root = settings.MEDIA_ROOT)
