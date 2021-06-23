@@ -108,9 +108,13 @@ def recipeCreation(request):
             if Requires.objects.filter(rec_id = recipe.rec_id).exists(): # Delete before update 
                 Requires.objects.filter(rec_id = recipe.rec_id).delete()
                 res = f"Successfully updated {recipe.rec_name}"
-            for ingred_id, quantity in ingredients.items():
-                ingredient = Ingredient.objects.get(ingred_id = ingred_id) # Get actual ingredient
-                Requires.objects.create(ingred_id = ingredient, rec_id = recipe, quantity = quantity) # Create Requires entry
+            for ingred_id, data in ingredients.items():
+                try:
+                    ingredient = Ingredient.objects.get(ingred_id = ingred_id) # Get actual ingredient
+                except: # DNE so we create
+                    ingredient = Ingredient.objects.create(ingred_name = data['ingred_name'], ingred_unit = data['ingred_unit'], ingred_cat = 'Uncategorised')
+                    data = data['ingred_quantity']
+                Requires.objects.create(ingred_id = ingredient, rec_id = recipe, quantity = data) # Create Requires entry
             return JsonResponse(res, safe = False)
         else: # For debugging 
             print(rec_serializer.errors)

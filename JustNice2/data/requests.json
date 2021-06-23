@@ -56,19 +56,19 @@ ALL THE VARIABLE NAMINGS MUST BE STRICTLY FOLLOWED FRONT AND BACKEND
     "ingred_name": "Lamb"
 }
 
-// Recipe creation POST with no ingred link 
-// This is sort of a helper function since we need to populate 2 tables
-// Again, follow the variable namings EXACTLY
-{
-    "rec_name": "rec1",
-    "rec_instructions": "Just cook",
-    "cooking_time": "100.0",
-    "serving_pax": "1",
-    "cuisine" : "global",
-    "rec_type": "edible",
-    "isPublished": "True",
-    "user_id": "1"
-}
+// // Recipe creation POST with no ingred link 
+// // This is sort of a helper function since we need to populate 2 tables
+// // Again, follow the variable namings EXACTLY
+// {
+//     "rec_name": "rec1",
+//     "rec_instructions": "Just cook",
+//     "cooking_time": "100.0",
+//     "serving_pax": "1",
+//     "cuisine" : "global",
+//     "rec_type": "edible",
+//     "isPublished": "True",
+//     "user_id": "1"
+// }
 
 // Actual recipe creation POST, variable names must follow exactly and 
 // all fields must be included
@@ -76,6 +76,7 @@ ALL THE VARIABLE NAMINGS MUST BE STRICTLY FOLLOWED FRONT AND BACKEND
 // ingred_id : qty
 {
     "rec_name": "rec1",
+    "rec_id": "id",
     "rec_instructions": "Just cook",
     "cooking_time": "100.0",
     "serving_pax": "1",
@@ -85,7 +86,12 @@ ALL THE VARIABLE NAMINGS MUST BE STRICTLY FOLLOWED FRONT AND BACKEND
     "user_id": "1",
     "ingredients": {
         "ingred_id1": "1",
-        "ingred_id2": "2"
+        "ingred_id2": "2",
+        "ingred_idUnknown": {
+            "ingred_name" : "name",
+            "ingred_unit" : "g/ml/whole",
+            "ingred_quantity" : "qty"
+        }
     }
 }
 
@@ -117,3 +123,54 @@ ALL THE VARIABLE NAMINGS MUST BE STRICTLY FOLLOWED FRONT AND BACKEND
         "ingred_id2" : "qty2"
     }
 }
+
+// Groc list updater:
+{
+    "rec_id1" : "qty1"
+}
+
+
+
+// Groc list updater GET output: FOLLOW THIS FORMAT
+[
+    {
+        "veggie": [
+            {
+                "ingred_id": 1,
+                "ingred_name": "Apple",
+                "ingred_unit": "whole",
+                "ingred_cat": "Fruits",
+                "ingred_quantity": 1,
+                "is_bought" : "false"
+            },
+            {
+                "ingred_id": 2,
+                "ingred_name": "Chicken",
+                "ingred_unit": "g",
+                "ingred_cat": "Meat",
+                "ingred_quantity": 2,
+                "is_bought" : "false"
+            }
+        ]
+    },
+    {
+        "meat": [
+            {
+                "ingred_id": 3,
+                "ingred_name": "Apple",
+                "ingred_unit": "whole",
+                "ingred_cat": "Fruits",
+                "ingred_quantity": 1,
+                "is_bought" : "false"
+            },
+            {
+                "ingred_id": 4,
+                "ingred_name": "Chicken",
+                "ingred_unit": "g",
+                "ingred_cat": "Meat",
+                "ingred_quantity": 2,
+                "is_bought" : "false"
+            }
+        ]
+    }
+]

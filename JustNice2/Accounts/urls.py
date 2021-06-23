@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path
-from .views import userApi, saveFile, login
+from .views import *
+from sharedfiles.views import saveFile
 
 from django.conf.urls.static import static
 from django.conf.urls import url

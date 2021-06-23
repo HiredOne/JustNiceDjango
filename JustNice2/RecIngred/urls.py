@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.urls import path
 from .views import * # IMPORT THE VIEWS
-from Accounts.views import saveFile
 
 from django.conf.urls.static import static
 from django.conf.urls import url
@@ -18,5 +17,4 @@ urlpatterns = [
     path('getfullrec/', getFullRecipe), # Get full recipe
     path('checkingred/', verifyIngred), # Ingredient validation
     path('ingred/', ingredView), # Ingredient CRUD
-    path('uploadphoto/', saveFile)
 ] + static(settings.MEDIA_URL , document_root = settings.MEDIA_ROOT)

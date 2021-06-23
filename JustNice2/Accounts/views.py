@@ -8,7 +8,6 @@ from django.contrib.auth.models import User, UserManager
 from django.contrib.auth import authenticate
 from .serializers import UserSerializer
 
-from django.core.files.storage import default_storage
 # Create your views here
 
 @csrf_exempt
@@ -67,13 +66,3 @@ def login(request, id = 0, *args, **kwargs):
             return JsonResponse(res, safe = False)
         except:
             return JsonResponse(res, safe = False)
-
-@csrf_exempt
-def saveFile(request):
-    # print(request.FILES)
-    try:
-        file = request.FILES['pic']
-        file_name = default_storage.save(file.name, file)
-        return JsonResponse(file_name, safe = False)
-    except:
-        return JsonResponse("This is a secured page", safe = False)
