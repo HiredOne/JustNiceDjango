@@ -97,6 +97,7 @@ def recipeCreation(request):
     elif request.method == "POST":
         rec_data = JSONParser().parse(request)
         ingredients = rec_data.pop('ingredients') # Take out the ingredients
+        res = {"status" : -1}
 
         # First we create/update the recipe in Recipe table
         rec_serializer = RecSerializer(data = rec_data)
@@ -104,10 +105,11 @@ def recipeCreation(request):
             rec_data["user_id"] = User.objects.get(id = rec_data["user_id"]) # Get the User for the foreign key
             recipe = Recipe(**rec_data) # Create/update recipe
             recipe.save()
-            res = f"Successfully added {recipe.rec_name}"
+            res['status'] = 1
+            res['msg'] = f"Successfully added {recipe.rec_name}"
             if Requires.objects.filter(rec_id = recipe.rec_id).exists(): # Delete before update 
                 Requires.objects.filter(rec_id = recipe.rec_id).delete()
-                res = f"Successfully updated {recipe.rec_name}"
+                res['msg'] = f"Successfully updated {recipe.rec_name}"
             for ingred_id, data in ingredients.items():
                 try:
                     ingredient = Ingredient.objects.get(ingred_id = ingred_id) # Get actual ingredient
@@ -118,7 +120,9 @@ def recipeCreation(request):
             return JsonResponse(res, safe = False)
         else: # For debugging 
             print(rec_serializer.errors)
-    return JsonResponse("Failed to add",safe = False)
+            res['status'] = -1
+            res['msg'] = "Failed to add"
+    return JsonResponse(res, safe = False)
 
 # Getting all the recipes of the user 
 @csrf_exempt
