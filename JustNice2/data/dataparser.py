@@ -13,6 +13,6 @@ def read_csv(csvfilename):
         rows = [row for row in csv.reader(csvfile)]
     return rows
 
-rows = read_excel("clean_recipes_excel.xlx")
-print(rows)
+# rows = read_excel("clean_recipes_excel.xlx")
+# print(rows)
 

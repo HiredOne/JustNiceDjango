@@ -12,4 +12,4 @@ class Converts(models.Model):
     isBought = models.BooleanField(default = False)
     ingred_quantity = models.FloatField()
     user_id = models.ForeignKey(User, models.CASCADE) # If user deletes account, delete all related recipes
-    ingred_id = models.ForeignKey("Ingredient", models.CASCADE) # FK since many ingred needed in 1 recipe
+    ingred_id = models.ForeignKey(Ingredient, models.CASCADE) # FK since many ingred needed in 1 recipe

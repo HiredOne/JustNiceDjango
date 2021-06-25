@@ -125,52 +125,56 @@ ALL THE VARIABLE NAMINGS MUST BE STRICTLY FOLLOWED FRONT AND BACKEND
 }
 
 // Groc list updater:
+// Format for updating ingredients
 {
-    "rec_id1" : "qty1"
+	"rec_id" : "qty"
 }
 
-
+// Format for updating is bought 
+{ 
+	"list_name" : "New list name",
+	"3" : true,
+	"16" : true
+}
 
 // Groc list updater GET output: FOLLOW THIS FORMAT
-[
-    {
-        "veggie": [
-            {
-                "ingred_id": 1,
-                "ingred_name": "Apple",
-                "ingred_unit": "whole",
-                "ingred_cat": "Fruits",
-                "ingred_quantity": 1,
-                "is_bought" : "false"
-            },
-            {
-                "ingred_id": 2,
-                "ingred_name": "Chicken",
-                "ingred_unit": "g",
-                "ingred_cat": "Meat",
-                "ingred_quantity": 2,
-                "is_bought" : "false"
-            }
-        ]
-    },
-    {
-        "meat": [
-            {
-                "ingred_id": 3,
-                "ingred_name": "Apple",
-                "ingred_unit": "whole",
-                "ingred_cat": "Fruits",
-                "ingred_quantity": 1,
-                "is_bought" : "false"
-            },
-            {
-                "ingred_id": 4,
-                "ingred_name": "Chicken",
-                "ingred_unit": "g",
-                "ingred_cat": "Meat",
-                "ingred_quantity": 2,
-                "is_bought" : "false"
-            }
-        ]
-    }
-]
+{
+    "veggie": [
+        {
+            "ingred_id": 1,
+            "ingred_name": "Apple",
+            "ingred_unit": "whole",
+            "ingred_cat": "Fruits",
+            "ingred_quantity": 1,
+            "is_bought" : "false"
+        },
+        {
+            "ingred_id": 2,
+            "ingred_name": "Chicken",
+            "ingred_unit": "g",
+            "ingred_cat": "Meat",
+            "ingred_quantity": 2,
+            "is_bought" : "false"
+        }
+    ]
+,
+
+    "meat": [
+        {
+            "ingred_id": 3,
+            "ingred_name": "Apple",
+            "ingred_unit": "whole",
+            "ingred_cat": "Fruits",
+            "ingred_quantity": 1,
+            "is_bought" : "false"
+        },
+        {
+            "ingred_id": 4,
+            "ingred_name": "Chicken",
+            "ingred_unit": "g",
+            "ingred_cat": "Meat",
+            "ingred_quantity": 2,
+            "is_bought" : "false"
+        }
+    ]
+}

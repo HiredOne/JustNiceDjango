@@ -9,9 +9,10 @@ app_name = 'groclist' # Remember to set the app name
 
 urlpatterns = [
     path('', home), # Home
-    path('<int:id>/', grocListGetter), # Get user with user_id = id's list of lists
+    path('getter/', grocListGetter),
+    path('getter/<int:id>/', grocListGetter), # Get user with user_id = id's list of lists
     path('update/', grocListUpdater), # Putting stuff into list with list_id = id
-    path('update/<int:id>/', grocListUpdater)
+    path('update/<int:user_id>/<int:list_id>/', grocListUpdater)
 
 
 ] + static(settings.MEDIA_URL , document_root = settings.MEDIA_ROOT)

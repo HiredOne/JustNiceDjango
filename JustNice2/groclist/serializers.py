@@ -11,4 +11,9 @@ class ConvSerializer(serializers.ModelSerializer):
 class ConvListIdSerializer(serializers.ModelSerializer):
     class Meta:
         model = Converts
-        fields = ['list_id', ]
+        fields = ['list_id', 'list_name']
+
+class ConvBoughtQtySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Converts
+        fields = ['isBought', 'ingred_quantity']
