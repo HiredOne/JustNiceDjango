@@ -24,4 +24,3 @@ class Requires(models.Model): # This is a weak entity marking ingred needed in a
     rec_id = models.OneToOneField("Recipe", models.CASCADE) # 1-1 returns a direct obj since 1 recipe has many ingred
     ingred_id = models.ForeignKey("Ingredient", models.CASCADE) # FK since many ingred needed in 1 recipe
     quantity = models.FloatField()
-    # unique_together = ('rec_id', 'ingred_id')
