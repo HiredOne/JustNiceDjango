@@ -15,5 +15,5 @@ urlpatterns = [
     path('', userApi), #CBV 
     path('login/', login),
     path('<int:id>/', userApi),
-    path('uploadphoto/', saveFile)
+    path('uploadphoto/', saveFile),
 ] + static(settings.MEDIA_URL , document_root = settings.MEDIA_ROOT)

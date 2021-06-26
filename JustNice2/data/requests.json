@@ -6,7 +6,11 @@ the requests are to be in.
 /*
 ALL THE VARIABLE NAMINGS MUST BE STRICTLY FOLLOWED FRONT AND BACKEND
 */
-
+// THIS IS THE ADMIN LOGIN DETAILS
+{
+    "username": "root",
+    "password": "justnice123"
+}
 // Login POST, use either format. First one shows min required fields 
 {
     "username": "LoginGuy1",

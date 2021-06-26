@@ -56,9 +56,10 @@ def login(request, id = 0, *args, **kwargs):
         user_data = JSONParser().parse(request)
         res = {"status" : -1}
         try: 
-            user = authenticate(username = user_data['username'], password = user_data['password'])
+            # user = authenticate(username = user_data['username'], password = user_data['password'])
+            user = User.objects.get(username = user_data['username'])
             users_serializer = UserSerializer(user, data = user_data)
-            if users_serializer.is_valid():
+            if users_serializer.is_valid() and user.check_password(user_data['password']):
                 res["status"] = 1
                 res["user"] = users_serializer.data
                 return JsonResponse(res, safe = False)
