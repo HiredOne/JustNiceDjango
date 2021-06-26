@@ -36,6 +36,8 @@ def userApi(request, id = 0, *args, **kwargs):
         user = User.objects.get(username = user_data['username'])
         users_serializer = UserSerializer(user, data = user_data)
         if users_serializer.is_valid():
+            if 'password' in user_data:
+                user.set_password(user_data['password'])
             users_serializer.save()
             return JsonResponse("Updated Successfully", safe = False)
         return JsonResponse("Failed to update", safe = False)
