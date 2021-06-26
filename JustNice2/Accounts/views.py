@@ -4,8 +4,9 @@ from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
 from json import dumps
 
-from django.contrib.auth.models import User, UserManager
 from django.contrib.auth import authenticate
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import User, UserManager
 from .serializers import UserSerializer
 
 # Create your views here
@@ -34,10 +35,11 @@ def userApi(request, id = 0, *args, **kwargs):
     elif request.method == "PUT":
         user_data = JSONParser().parse(request)
         user = User.objects.get(username = user_data['username'])
+        if 'password' in user_data:
+            new_pwd = make_password(user_data['password'])
+            user_data['password'] = new_pwd
         users_serializer = UserSerializer(user, data = user_data)
         if users_serializer.is_valid():
-            if 'password' in user_data:
-                user.set_password(user_data['password'])
             users_serializer.save()
             return JsonResponse("Updated Successfully", safe = False)
         return JsonResponse("Failed to update", safe = False)
