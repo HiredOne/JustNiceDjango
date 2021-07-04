@@ -71,3 +71,18 @@ def login(request, id = 0, *args, **kwargs):
             return JsonResponse(res, safe = False)
         except:
             return JsonResponse(res, safe = False)
+
+# Verification view on whether a user exists in our DB
+@csrf_exempt
+def verifyUser(request): 
+    if request.method == "GET":
+        return JsonResponse("This page is for verifying users", safe = False)
+    elif request.method == "POST":
+        username = JSONParser().parse(request)['username'] # Parse info and get username
+        user = User.objects.filter(username = username) # Search directly
+        res = {"status" : "Does not exist"}
+        if user.exists():
+            res['user'] = UserSerializer(user.get()).data
+            res['status'] = 'Exist'
+            return JsonResponse(res, safe = False)
+        return JsonResponse(res, safe = False)

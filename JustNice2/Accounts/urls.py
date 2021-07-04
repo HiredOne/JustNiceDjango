@@ -16,4 +16,5 @@ urlpatterns = [
     path('login/', login),
     path('<int:id>/', userApi),
     path('uploadphoto/', saveFile),
+    path('checkuser/', verifyUser), # User validation
 ] + static(settings.MEDIA_URL , document_root = settings.MEDIA_ROOT)

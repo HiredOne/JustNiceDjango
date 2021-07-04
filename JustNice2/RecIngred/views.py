@@ -55,14 +55,21 @@ def ingredView(request, id = 0, *args, **kwargs):
         ingred_serializer = IngredSerializer(ingredients, many = True)
         return JsonResponse(ingred_serializer.data, safe = False)
     elif request.method == "POST":
-        ingred_data = JSONParser().parse(request)
-        ingred_serializer = IngredSerializer(data = ingred_data)
-        #ingred_data.pop('ingred_id', "required_default")
-        if ingred_serializer.is_valid():
-            Ingredient.objects.create(**ingred_data)
-            return JsonResponse(f"Successfully added {ingred_data['ingred_name']}", safe = False)
-        print(ingred_serializer.errors) # Print errors 
-        return JsonResponse("Failed to add", safe = False)
+        try:
+            ingred_data = JSONParser().parse(request)
+            ingred_serializer = IngredSerializer(data = ingred_data)
+            #ingred_data.pop('ingred_id', "required_default")
+            exist = Ingredient.objects.filter(ingred_name = ingred_data['ingred_name']).exists() # Check existence
+            res = {"status" : "Failed to add"}
+            if ingred_serializer.is_valid() and not exist:
+                Ingredient.objects.create(**ingred_data)
+                res['status'] = f"Successfully added {ingred_data['ingred_name']}"
+                return JsonResponse(res, safe = False)
+            elif exist:
+                res['status'] = f"{ingred_data['ingred_name']} already exists"
+                return JsonResponse(res, safe = False)
+        except:
+            return JsonResponse(res, safe = False)
 
 # Verification view on whether an ingredient exists in our DB
 @csrf_exempt
