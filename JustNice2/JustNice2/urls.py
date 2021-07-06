@@ -19,7 +19,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from sharedfiles.views import saveFile
+from sharedfiles.views import *
 from .views import populate
 
 urlpatterns = [
@@ -28,5 +28,7 @@ urlpatterns = [
     path('recingred/', include('RecIngred.urls')),
     path('groclist/', include('groclist.urls')),
     path('uploadphoto/', saveFile),
+    path('updatephoto/', updatePhoto),
+    path('getphoto/', getPhoto),
     path('populate/', populate),
 ] + static(settings.MEDIA_URL , document_root = settings.MEDIA_ROOT)

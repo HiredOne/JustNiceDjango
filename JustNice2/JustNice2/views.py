@@ -11,6 +11,7 @@ from data.dataparser import read_csv
 # Create your views here
 
 # This view is used to populate the db with the desired stuff 
+# ONLY TO BE DONE LOCALLY 
 @csrf_exempt
 def populate(request):
     try:
@@ -21,4 +22,5 @@ def populate(request):
             print(ingred)
         return JsonResponse("Ingredients added", safe = False)
     except:
-        return JsonResponse(f"Failed to add {ingred}", safe = False)
+        return JsonResponse("Population failed", safe = False)
+        # return JsonResponse(f"Failed to add {ingred}", safe = False)

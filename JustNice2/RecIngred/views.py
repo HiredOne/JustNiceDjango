@@ -115,6 +115,8 @@ def recipeCreation(request):
             res['status'] = 1
             res['msg'] = f"Successfully added {recipe.rec_name}"
             res['rec_id'] = recipe.rec_id
+
+            # Now we create/update the Requires table
             if Requires.objects.filter(rec_id = recipe.rec_id).exists(): # Delete before update 
                 Requires.objects.filter(rec_id = recipe.rec_id).delete()
                 res['msg'] = f"Successfully updated {recipe.rec_name}"
@@ -126,6 +128,13 @@ def recipeCreation(request):
                         ingredient = Ingredient.objects.create(ingred_name = data['ingred_name'], ingred_unit = data['ingred_unit'], ingred_cat = 'Uncategorised')
                         data = data['ingred_quantity']
                     Requires.objects.create(ingred_id = ingredient, rec_id = recipe, quantity = data) # Create Requires entry
+
+            # Finally we set a default photo for the rec 
+            rec_id = res['rec_id'] # Get id
+            filename = "rec" + str(rec_id) + ".jpg"
+            default_photo = default_storage.open("default.jpg") # Get photo
+            default_storage.save(filename, default_photo) # Save copy
+
             # for ingred_id, data in ingredients.items():
             #     try:
             #         ingredient = Ingredient.objects.get(ingred_id = ingred_id) # Get actual ingredient

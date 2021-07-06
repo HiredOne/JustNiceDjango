@@ -7,6 +7,7 @@ from json import dumps
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User, UserManager
+from django.core.files.storage import default_storage
 from .serializers import UserSerializer
 
 # Create your views here
@@ -18,20 +19,28 @@ def userApi(request, id = 0, *args, **kwargs):
         # User.objects.all().delete() # DO NOT UNCOMMENT. THIS IS TO CLEAR THE USER DB
         users_serializer = UserSerializer(users, many = True)
         return JsonResponse(users_serializer.data, safe = False)
-    elif request.method == "POST":
-        user_data = JSONParser().parse(request)
-        user_data.pop('id', "required_default")
-        users_serializer = UserSerializer(data = user_data)
-        #print(users_serializer)
-        if users_serializer.is_valid():
-            User.objects.create_user(**user_data)
-            # users_serializer.save()
-            # user = User.objects.get(username = user_data['username'])
-            # user.set_password(user_data['password'])
-            # user.save()
-            return JsonResponse("Added Successfully", safe = False)
-        print(users_serializer.errors)
-        return JsonResponse("Failed to add", safe = False)
+    elif request.method == "POST": # Registering new user 
+        try:
+            user_data = JSONParser().parse(request)
+            user_data.pop('id', "required_default")
+            users_serializer = UserSerializer(data = user_data)
+            if users_serializer.is_valid():
+                User.objects.create_user(**user_data) # Create the user 
+                # users_serializer.save()
+                # user = User.objects.get(username = user_data['username'])
+                # user.set_password(user_data['password'])
+                # user.save()
+                
+                # Now we set a default photo for the user 
+                user_id = User.objects.latest('id').id # Get id
+                filename = "user" + str(user_id) + ".jpg"
+                default_photo = default_storage.open("default.jpg") # Get photo
+                default_storage.save(filename, default_photo) # Save copy
+                return JsonResponse("Added Successfully", safe = False)
+        except:
+            print(users_serializer.errors)
+            errors = users_serializer.errors
+            return JsonResponse(f"Failed to add due to: {errors}", safe = False)
     elif request.method == "PUT":
         user_data = JSONParser().parse(request)
         user = User.objects.get(username = user_data['username'])
@@ -43,9 +52,19 @@ def userApi(request, id = 0, *args, **kwargs):
             users_serializer.save()
             return JsonResponse("Updated Successfully", safe = False)
         return JsonResponse("Failed to update", safe = False)
-    elif request.method == "DELETE":
-        user = User.objects.get(id = id)
-        user.delete()
+    elif request.method == "DELETE": # Delete user and profile pic 
+        user = User.objects.get(id = id) # Get user 
+        filename = "user" + str(user.id)
+
+        # Find extension and delete the photo
+        if default_storage.exists(filename + ".png"):
+            default_storage.delete(filename + ".png")
+        elif default_storage.exists(filename + ".jpg"):
+            default_storage.delete(filename + ".jpg")
+        elif default_storage.exists(filename + ".jpeg"):
+            default_storage.delete(filename + ".jpeg")
+
+        user.delete() # Delete the user 
         return JsonResponse("Deleted successfully", safe = False)
 
 # LOGIN SCREEN
