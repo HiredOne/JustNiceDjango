@@ -9,6 +9,7 @@ from rest_framework.parsers import JSONParser
 from django.contrib.auth.models import User
 from .models import *
 from .serializers import *
+from sharedfiles.views import findPhoto, nameMaker
 
 # Create your views here
 
@@ -16,34 +17,34 @@ def home(request):
     return HttpResponse("Home page for rec and ingred")
 
 # Recipe creation with no linking to ingred. THIS IS DEPRECATED
-@csrf_exempt
-def recNoIngred(request, id = 0, *args, **kwargs):
-    if request.method == "GET":
-        recipes = Recipe.objects.all()
-        # Recipe.objects.all().delete() # DO NOT UNCOMMENT. THIS IS TO CLEAR THE USER DB
-        rec_serializer = RecSerializer(recipes, many = True)
-        return JsonResponse(rec_serializer.data, safe = False)
-    elif request.method == "POST": # Submission of recipes 
-        rec_data = JSONParser().parse(request)
-        rec_serializer = RecSerializer(data = rec_data)
-        if rec_serializer.is_valid():
-            rec_data["user_id"] = User.objects.get(id = rec_data["user_id"])
-            Recipe.objects.create(**rec_data)
-            return JsonResponse("Added Successfully", safe = False)
-        print(rec_serializer.errors) # Print errors 
-        return JsonResponse("Failed to add", safe = False)
-    elif request.method == "PUT":
-        rec_data = JSONParser().parse(request)
-        rec = Recipe.objects.get(rec_name = rec_data['rec_name'])
-        rec_serializer = RecSerializer(rec, data = rec_data)
-        if rec_serializer.is_valid():
-            rec_serializer.save()
-            return JsonResponse("Updated Successfully", safe = False)
-        return JsonResponse("Failed to update", safe = False)
-    elif request.method == "DELETE":
-        rec = Recipe.objects.get(id = id)
-        rec.delete()
-        return JsonResponse("Deleted successfully", safe = False)
+# @csrf_exempt
+# def recNoIngred(request, id = 0, *args, **kwargs):
+#     if request.method == "GET":
+#         recipes = Recipe.objects.all()
+#         # Recipe.objects.all().delete() # DO NOT UNCOMMENT. THIS IS TO CLEAR THE USER DB
+#         rec_serializer = RecSerializer(recipes, many = True)
+#         return JsonResponse(rec_serializer.data, safe = False)
+#     elif request.method == "POST": # Submission of recipes 
+#         rec_data = JSONParser().parse(request)
+#         rec_serializer = RecSerializer(data = rec_data)
+#         if rec_serializer.is_valid():
+#             rec_data["user_id"] = User.objects.get(id = rec_data["user_id"])
+#             Recipe.objects.create(**rec_data)
+#             return JsonResponse("Added Successfully", safe = False)
+#         print(rec_serializer.errors) # Print errors 
+#         return JsonResponse("Failed to add", safe = False)
+#     elif request.method == "PUT":
+#         rec_data = JSONParser().parse(request)
+#         rec = Recipe.objects.get(rec_name = rec_data['rec_name'])
+#         rec_serializer = RecSerializer(rec, data = rec_data)
+#         if rec_serializer.is_valid():
+#             rec_serializer.save()
+#             return JsonResponse("Updated Successfully", safe = False)
+#         return JsonResponse("Failed to update", safe = False)
+#     elif request.method == "DELETE":
+#         rec = Recipe.objects.get(id = id)
+#         rec.delete()
+#         return JsonResponse("Deleted successfully", safe = False)
 
 # Ingred Creation
 @csrf_exempt
@@ -148,7 +149,7 @@ def recipeCreation(request):
             res['status'] = -1
             res['msg'] = "Failed to add"
             res.pop('rec_id')
-    return JsonResponse(res, safe = False)
+        return JsonResponse(res, safe = False)
 
 # Getting all the recipes of the user 
 @csrf_exempt
@@ -159,7 +160,12 @@ def getUserRec(request):
         user_id = JSONParser().parse(request)['user_id']
         recipes = Recipe.objects.filter(user_id = user_id)
         rec_serializer = RecNameIdSerializer(recipes, many = True)
-        return JsonResponse(rec_serializer.data, safe = False)
+        res = rec_serializer.data
+        # Now we add the photo url in
+        for rec in res:
+            filename = "rec" + str(rec['rec_id'])
+            rec['url'] = findPhoto(filename)['url']
+        return JsonResponse(res, safe = False)
 
 # Getting full recipe of the user with ingredients
 @csrf_exempt
@@ -181,5 +187,8 @@ def getFullRecipe(request):
         for ingredient in ingred_serializer.data: # This is to integrate the quantity into ingredient for readability
             ingredient['ingred_quantity'] = quantity[ingredient['ingred_id']]
         res['ingredient'] = ingred_serializer.data # Append to final res
+        # Now we add the photo in
+        filename = "rec" + str(res['rec_id'])
+        res['url'] = findPhoto(filename)['url']
         return JsonResponse(res, safe = False)
         # return JsonResponse("Incomplete", safe= False)

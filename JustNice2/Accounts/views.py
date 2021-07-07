@@ -9,6 +9,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User, UserManager
 from django.core.files.storage import default_storage
 from .serializers import UserSerializer
+from sharedfiles.views import findPhoto, nameMaker 
 
 # Create your views here
 
@@ -55,15 +56,10 @@ def userApi(request, id = 0, *args, **kwargs):
     elif request.method == "DELETE": # Delete user and profile pic 
         user = User.objects.get(id = id) # Get user 
         filename = "user" + str(user.id)
+        filename = findPhoto(filename)['filename']
 
-        # Find extension and delete the photo
-        if default_storage.exists(filename + ".png"):
-            default_storage.delete(filename + ".png")
-        elif default_storage.exists(filename + ".jpg"):
-            default_storage.delete(filename + ".jpg")
-        elif default_storage.exists(filename + ".jpeg"):
-            default_storage.delete(filename + ".jpeg")
-
+        # Delete photo then the user
+        default_storage.delete(filename)
         user.delete() # Delete the user 
         return JsonResponse("Deleted successfully", safe = False)
 
@@ -77,16 +73,18 @@ def login(request, id = 0, *args, **kwargs):
         return JsonResponse(users_serializer.data, safe = False)
     elif request.method == "POST":
         user_data = JSONParser().parse(request)
-        res = {"status" : -1}
+        res = {"status" : -1} # Initial status
         try: 
             # user = authenticate(username = user_data['username'], password = user_data['password'])
             user = User.objects.get(username = user_data['username'])
             users_serializer = UserSerializer(user, data = user_data)
             if users_serializer.is_valid() and user.check_password(user_data['password']):
-                res["status"] = 1
-                res["user"] = users_serializer.data
+                res["status"] = 1 # Update status 
+                res["user"] = users_serializer.data # Add user data in
+                filename = 'user' + str(user.id)
+                res['url'] = findPhoto(filename)['url']
                 return JsonResponse(res, safe = False)
-            res["status"] = 0
+            res["status"] = 0 # Wrong password 
             return JsonResponse(res, safe = False)
         except:
             return JsonResponse(res, safe = False)

@@ -20,14 +20,16 @@ Unless mentioned otherwise, all fields MUST be included
 
 // Ext: /user/
 // Use: Registering users and editing profile info
-// Validators required: username must be unique. Pwd and cfm pwd must match
+// Validators required: username must be unique 
+// and only contain alphanumeric, _, @, +, . and - characters. 
+// Pwd and cfm pwd must match
 // DO NOT include 'id' as a field. Auto incrementer already added
 // Optional: No whitespace at the start
 // Use on: POST req to create, PUT req to update
 // POST AND PUT share same input format
 
 {
-    "username": "some username",
+    "username": "trinidad",
     "email": "email@email.com",
     "first_name": "firstname",
     "last_name": "lastname",
@@ -54,6 +56,7 @@ Unless mentioned otherwise, all fields MUST be included
     "username" : "username"
 }
 
+CONTINUE FROM HERE 
 // Ingred creation POST, all fields are required
 // ingred_name MUST BE UNIQUE 
 
@@ -70,27 +73,12 @@ Unless mentioned otherwise, all fields MUST be included
     "ingred_name": "Lamb"
 }
 
-// // Recipe creation POST with no ingred link 
-// // This is sort of a helper function since we need to populate 2 tables
-// // Again, follow the variable namings EXACTLY
-// {
-//     "rec_name": "rec1",
-//     "rec_instructions": "Just cook",
-//     "cooking_time": "100.0",
-//     "serving_pax": "1",
-//     "cuisine" : "global",
-//     "rec_type": "edible",
-//     "isPublished": "True",
-//     "user_id": "1"
-// }
-
 // Actual recipe creation POST, variable names must follow exactly and 
 // all fields must be included
 // The value for ingredients is another nested json with KVPair of
 // ingred_id : qty
 {
     "rec_name": "rec1",
-    "rec_id": "id",
     "rec_instructions": "Just cook",
     "cooking_time": "100.0",
     "serving_pax": "1",
@@ -98,15 +86,15 @@ Unless mentioned otherwise, all fields MUST be included
     "rec_type": "edible",
     "isPublished": "True",
     "user_id": "1",
-    "ingredients": {
-        "ingred_id1": "1",
-        "ingred_id2": "2",
-        "ingred_idUnknown": {
-            "ingred_name" : "name",
+    "ingredients": [
+    	{"ingred_id1": "1"},
+        {"ingred_id2": "2"},
+        {"ingred_id_uncat": {
+        	"ingred_name" : "new ingred ",
             "ingred_unit" : "g/ml/whole",
             "ingred_quantity" : "qty"
         }
-    }
+        }]
 }
 
 // Recipe getter, this is used to get all recipes belonging to a user
@@ -161,4 +149,16 @@ Unless mentioned otherwise, all fields MUST be included
 { 
 	"3" : true,
 	"16" : true
+}
+
+
+// GET PHOTO
+{
+    "filename" : "name_with_no_ext"
+}
+
+// Update PHOTO
+{
+    "pic" : "Photo file here",
+    "filename" : "name_with_no_ext"
 }

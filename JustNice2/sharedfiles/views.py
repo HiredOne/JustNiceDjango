@@ -25,40 +25,23 @@ def saveFile(request):
 @csrf_exempt
 def updatePhoto(request): # For updating user/rec photo
     try:
-        res = {"url" : default_storage.url('default.jpg')} # URL to default photo
-        res['status'] = 'default' # Status of photo
-
         # First we find (if existing) old photo and get the url
         filename = request.POST['filename'] 
-        if default_storage.exists(filename + ".png"):
-            old_filename = filename + ".png"
-            res['url'] = default_storage.url(old_filename)
-            res['status'] = 'old' # Update status
-        elif default_storage.exists(filename + ".jpg"):
-            old_filename = filename + ".jpg"
-            res['url'] = default_storage.url(old_filename)
-            res['status'] = 'old' # Update status
-        elif default_storage.exists(filename + ".jpeg"):
-            old_filename = filename + ".jpeg"
-            res['url'] = default_storage.url(old_filename)
-            res['status'] = 'old' # Update status
-
+        res = findPhoto(filename)
+        
         # Next, we parse the new photo
         file = request.FILES['pic'] # Get the photo
+        
         # Make new filename
-        if "png" in file.name:
-            new_filename = filename + ".png"
-        elif "jpg" in file.name:
-            new_filename = filename + ".jpg"
-        elif "jpeg" in file.name:
-            new_filename = filename + ".jpeg"
+        new_filename = nameMaker(file, filename)
 
         # After confirming new photo is ready for upload, delete the old one
-        default_storage.delete(old_filename)
+        if res['status'] == 'old': # Delete existing photo
+            default_storage.delete(res['filename'])
         
         # Now we upload the new one 
-        new_filename = default_storage.save(new_filename, file)
-        res['url'] = default_storage.url(new_filename)
+        default_storage.save(new_filename, file)
+        res = findPhoto(filename)
         res['status'] = 'new' # Update status
         return JsonResponse(res, safe = False)
     except:
@@ -67,14 +50,37 @@ def updatePhoto(request): # For updating user/rec photo
 @csrf_exempt
 def getPhoto(request): # Photo retrieval
     try:
-        res = {"url" : default_storage.url('default.jpg')} # URL to default photo
         filename = JSONParser().parse(request)['filename']
-        if default_storage.exists(filename + ".png"):
-            res['url'] = default_storage.url(filename + ".png")
-        elif default_storage.exists(filename + ".jpg"):
-            res['url'] = default_storage.url(filename + ".jpg")
-        elif default_storage.exists(filename + ".jpeg"):
-            res['url'] = default_storage.url(filename + ".jpeg")
+        res = findPhoto(filename)
         return JsonResponse(res, safe = False)    
     except:
         return JsonResponse(res, safe = False)
+
+def findPhoto(filename): # Helper function to get URL path of photo
+    res = {
+        "url" : default_storage.url('default.jpg'),
+        "filename" : "default.jpg",
+        "status" : "default"
+        }
+    if default_storage.exists(filename + ".png"):
+        res['url'] = default_storage.url(filename + ".png")
+        res['filename'] = filename + ".png"
+        res['status'] = "old"
+    elif default_storage.exists(filename + ".jpg"):
+        res['url'] = default_storage.url(filename + ".jpg")
+        res['filename'] = filename + ".jpg"
+        res['status'] = "old"
+    elif default_storage.exists(filename + ".jpeg"):
+        res['url'] = default_storage.url(filename + ".jpeg")
+        res['filename'] = filename + ".jpeg"
+        res['status'] = "old"
+    return res
+
+def nameMaker(file, filename): # Helper function to make filename 
+    if "png" in file.name:
+        new_filename = filename + ".png" # Get filename
+    elif "jpg" in file.name:
+        new_filename = filename + ".jpg" # Get filename
+    elif "jpeg" in file.name:
+        new_filename = filename + ".jpeg" # Get filename
+    return new_filename
