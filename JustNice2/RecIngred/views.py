@@ -167,6 +167,49 @@ def getUserRec(request):
             rec['url'] = findPhoto(filename)['url']
         return JsonResponse(res, safe = False)
 
+@csrf_exempt
+# Search bar for recipes
+def searchRec(request): 
+    if request.method == "GET":
+        recipes = Recipe.objects.all()
+        rec_serializer = RecSerializer(recipes, many = True)
+        return JsonResponse(rec_serializer.data, safe = False)
+        # return JsonResponse("This page is for creating recipes", safe = False)
+    elif request.method == "POST":
+        rec_data = JSONParser().parse(request)
+        category = rec_data['category'] # Get the category
+        keywords = rec_data['keywords'].split() # Split the keywords
+        res = {}
+        # Then we search based on the category given
+        if category == "recingred":
+            rec = Recipe.objects.filter(rec_name__icontains = keywords[0])
+            ingredients = Ingredient.objects.filter(ingred_name__icontains = keywords[0]).values("ingred_id")
+            for keyword in keywords[1:]:
+                rec = rec.union(Recipe.objects.filter(rec_name__icontains = keyword))
+                ingredients = ingredients.union(Ingredient.objects.filter(ingred_name__icontains = keyword).values("ingred_id"))
+            print(rec)
+            print("r")
+            ingred = Requires.objects.filter(ingred_id__in = ingredients)
+            recingred = rec.union(ingred).values("rec_id")
+            print(recingred)
+            print('ri')
+            recipes = Recipe.objects.filter(rec_id__in = recingred)
+        elif category == "cooking_time":
+            recipes = Recipe.objects.filter(cooking_time__icontains = float(keywords[0]))
+        elif category == "serving_pax":
+            recipes = Recipe.objects.filter(serving_pax__icontains = int(keywords[0]))
+        elif category == "cuisine":
+            recipes = Recipe.objects.filter(cuisine__in = keywords)
+        elif category == "rec_type":
+            recipes = Recipe.objects.filter(rec_type__in = keywords)
+        rec_serializer = RecNameIdSerializer(recipes, many = True)
+        res = rec_serializer.data
+        # Now we add the photo url in
+        for rec in res:
+            filename = "rec" + str(rec['rec_id'])
+            rec['url'] = findPhoto(filename)['url']
+        return JsonResponse(res, safe = False)
+
 # Getting full recipe of the user with ingredients
 @csrf_exempt
 def getFullRecipe(request):

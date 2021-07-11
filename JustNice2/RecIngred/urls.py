@@ -17,4 +17,5 @@ urlpatterns = [
     path('getfullrec/', getFullRecipe), # Get full recipe
     path('checkingred/', verifyIngred), # Ingredient validation
     path('ingred/', ingredView), # Ingredient CRUD
+    path('search/', searchRec),
 ] + static(settings.MEDIA_URL , document_root = settings.MEDIA_ROOT)

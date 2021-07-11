@@ -20,7 +20,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from sharedfiles.views import *
-from .views import populate
+from .views import populate, home
 
 urlpatterns = [
     path('admin/', admin.site.urls),

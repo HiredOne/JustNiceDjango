@@ -24,3 +24,6 @@ def populate(request):
     except:
         return JsonResponse("Population failed", safe = False)
         # return JsonResponse(f"Failed to add {ingred}", safe = False)
+
+def home(request):
+    return JsonResponse("Homepage of JustNice", safe = False)
