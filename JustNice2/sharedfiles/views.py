@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
@@ -55,6 +55,15 @@ def getPhoto(request): # Photo retrieval
         return JsonResponse(res, safe = False)    
     except:
         return JsonResponse(res, safe = False)
+
+@csrf_exempt
+def dynamicPhoto(request, filename = 'default'): # Dynamic getter
+    try:
+        res = findPhoto(filename)
+        return redirect(res['url'])
+        # return JsonResponse(res, safe = False)    
+    except:
+        return JsonResponse(res['url'], safe = False)
 
 def findPhoto(filename): # Helper function to get URL path of photo
     res = {

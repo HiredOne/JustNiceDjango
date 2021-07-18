@@ -23,6 +23,7 @@ from sharedfiles.views import *
 from .views import populate, home
 
 urlpatterns = [
+    path('', home),
     path('admin/', admin.site.urls),
     path('user/', include('Accounts.urls')),
     path('recingred/', include('RecIngred.urls')),
@@ -30,5 +31,6 @@ urlpatterns = [
     path('uploadphoto/', saveFile),
     path('updatephoto/', updatePhoto),
     path('getphoto/', getPhoto),
+    path('getphoto/<str:filename>/', dynamicPhoto),
     path('populate/', populate),
 ] + static(settings.MEDIA_URL , document_root = settings.MEDIA_ROOT)
