@@ -15,11 +15,12 @@ from data.dataparser import read_csv
 @csrf_exempt
 def populate(request):
     try:
-        rows = load(open("C:/Users/Anthony/dev/JustNice2/data/ingredients.json")).values()
+        rows = load(open("C:/Users/Anthony/dev/JustNice2/data/Ingredients v6.json"))
         # print(Ingredient(**rows[0]).save())
+        print(rows[0])
         for row in rows:
             ingred = Ingredient(**row).save()
-            print(ingred)
+            # print(ingred)
         return JsonResponse("Ingredients added", safe = False)
     except:
         return JsonResponse("Population failed", safe = False)
