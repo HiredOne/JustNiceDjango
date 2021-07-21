@@ -25,5 +25,18 @@ def populate(request):
         return JsonResponse("Population failed", safe = False)
         # return JsonResponse(f"Failed to add {ingred}", safe = False)
 
+@csrf_exempt
+def populateRec(request):
+    try:
+        rows = load(open("C:/Users/Anthony/dev/JustNice2/data/extracted.json")).values()
+        # print(Ingredient(**rows[0]).save())
+        for row in rows:
+            rec = Recipe(**row[0:5]).save()
+            print(rec)
+        return JsonResponse("Recipe added", safe = False)
+    except:
+        return JsonResponse("Population failed", safe = False)
+        # return JsonResponse(f"Failed to add {ingred}", safe = False)
+
 def home(request):
     return JsonResponse("Homepage of JustNice", safe = False)

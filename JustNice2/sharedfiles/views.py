@@ -45,7 +45,7 @@ def updatePhoto(request): # For updating user/rec photo
         res['status'] = 'new' # Update status
         return JsonResponse(res, safe = False)
     except:
-        return JsonResponse(res, safe = False)
+        return JsonResponse("This is for updating photos", safe = False)
 
 @csrf_exempt
 def getPhoto(request): # Photo retrieval
@@ -54,7 +54,7 @@ def getPhoto(request): # Photo retrieval
         res = findPhoto(filename)
         return JsonResponse(res, safe = False)    
     except:
-        return JsonResponse(res, safe = False)
+        return JsonResponse("This is for getting photos ", safe = False)
 
 @csrf_exempt
 def dynamicPhoto(request, filename = 'default'): # Dynamic getter

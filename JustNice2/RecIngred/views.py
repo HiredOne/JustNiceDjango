@@ -150,6 +150,22 @@ def recipeCreation(request):
             res['msg'] = "Failed to add"
             res.pop('rec_id')
         return JsonResponse(res, safe = False)
+    elif request.method == "DELETE":
+        res = {"status" : "Failed to delete"}
+        try:
+            rec_data = JSONParser().parse(request)
+            rec_id = rec_data['rec_id']
+            rec = Recipe.objects.get(rec_id = rec_id) # Get recipe 
+            filename = "rec" + str(rec.rec_id)
+            filename = findPhoto(filename)['filename']
+
+            # Delete photo then the recipe
+            default_storage.delete(filename)
+            rec.delete() # Delete the user 
+            res['status'] = "Deleted successfully"
+            return JsonResponse(res, safe = False)
+        except:
+            return JsonResponse(res, safe = False)
 
 # Getting all the recipes of the user 
 @csrf_exempt
@@ -159,7 +175,7 @@ def getUserRec(request):
     elif request.method == 'POST':
         user_id = JSONParser().parse(request)['user_id']
         recipes = Recipe.objects.filter(user_id = user_id)
-        rec_serializer = RecNameIdSerializer(recipes, many = True)
+        rec_serializer = RecSerializer(recipes, many = True)
         res = rec_serializer.data
         # Now we add the photo url in
         for rec in res:
@@ -173,7 +189,13 @@ def searchRec(request):
     if request.method == "GET":
         recipes = Recipe.objects.all()
         rec_serializer = RecSerializer(recipes, many = True)
-        return JsonResponse(rec_serializer.data, safe = False)
+        res = rec_serializer.data
+        # Now we add the photo url in
+        for rec in res:
+            filename = "rec" + str(rec['rec_id'])
+            rec['url'] = findPhoto(filename)['url']
+        return JsonResponse(res, safe = False)
+        # return JsonResponse(rec_serializer.data, safe = False)
         # return JsonResponse("This page is for creating recipes", safe = False)
     elif request.method == "POST":
         rec_data = JSONParser().parse(request)
@@ -187,12 +209,8 @@ def searchRec(request):
             for keyword in keywords[1:]:
                 rec = rec.union(Recipe.objects.filter(rec_name__icontains = keyword))
                 ingredients = ingredients.union(Ingredient.objects.filter(ingred_name__icontains = keyword).values("ingred_id"))
-            print(rec)
-            print("r")
             ingred = Requires.objects.filter(ingred_id__in = ingredients)
             recingred = rec.union(ingred).values("rec_id")
-            print(recingred)
-            print('ri')
             recipes = Recipe.objects.filter(rec_id__in = recingred)
         elif category == "cooking_time":
             recipes = Recipe.objects.filter(cooking_time__icontains = float(keywords[0]))
@@ -202,7 +220,68 @@ def searchRec(request):
             recipes = Recipe.objects.filter(cuisine__in = keywords)
         elif category == "rec_type":
             recipes = Recipe.objects.filter(rec_type__in = keywords)
-        rec_serializer = RecNameIdSerializer(recipes, many = True)
+        rec_serializer = RecSerializer(recipes, many = True)
+        res = rec_serializer.data
+        # Now we add the photo url in
+        for rec in res:
+            filename = "rec" + str(rec['rec_id'])
+            rec['url'] = findPhoto(filename)['url']
+        return JsonResponse(res, safe = False)
+
+@csrf_exempt
+def complexSearch(request): 
+    if request.method == "GET":
+        recipes = Recipe.objects.all()
+        rec_serializer = RecSerializer(recipes, many = True)
+        res = rec_serializer.data
+        # Now we add the photo url in
+        for rec in res:
+            filename = "rec" + str(rec['rec_id'])
+            rec['url'] = findPhoto(filename)['url']
+        return JsonResponse(res, safe = False)
+        # return JsonResponse(rec_serializer.data, safe = False)
+        # return JsonResponse("This page is for creating recipes", safe = False)
+    elif request.method == "POST":
+        data = JSONParser().parse(request)
+        res = Recipe.objects.filter(rec_id = 0)
+        for rec_data in data:
+            category = rec_data['category'] # Get the category
+            keywords = rec_data['keywords'].split() # Split the keywords
+            # Then we search based on the category given
+            if category == "recingred":
+                rec = Recipe.objects.filter(rec_name__icontains = keywords[0])
+                ingredients = Ingredient.objects.filter(ingred_name__icontains = keywords[0]).values("ingred_id")
+                for keyword in keywords[1:]:
+                    rec = rec.union(Recipe.objects.filter(rec_name__icontains = keyword))
+                    ingredients = ingredients.union(Ingredient.objects.filter(ingred_name__icontains = keyword).values("ingred_id"))
+                ingred = Requires.objects.filter(ingred_id__in = ingredients)
+                recingred = rec.union(ingred).values("rec_id")
+                if res.exists():
+                    res = res.intersection(Recipe.objects.filter(rec_id__in = recingred))
+                else:
+                    res = res.union(Recipe.objects.filter(rec_id__in = recingred))
+            elif category == "cooking_time":
+                if res.exists():
+                    res = res.intersection(Recipe.objects.filter(cooking_time__icontains = float(keywords[0])))
+                else:
+                    res = res.union(Recipe.objects.filter(cooking_time__icontains = float(keywords[0])))
+            elif category == "serving_pax":
+                if res.exists():
+                    res = res.intersection(Recipe.objects.filter(serving_pax__icontains = int(keywords[0])))
+                else:
+                    res = res.union(Recipe.objects.filter(serving_pax__icontains = int(keywords[0])))
+            elif category == "cuisine":
+                if res.exists():
+                    res = res.intersection(Recipe.objects.filter(cuisine__in = keywords))
+                else:
+                    res = res.union(Recipe.objects.filter(cuisine__in = keywords))
+            elif category == "rec_type":
+                if res.exists():
+                    res = res.intersection(Recipe.objects.filter(rec_type__in = keywords))
+                else:
+                    res = res.union(Recipe.objects.filter(rec_type__in = keywords))
+            print(res)
+        rec_serializer = RecSerializer(res, many = True)
         res = rec_serializer.data
         # Now we add the photo url in
         for rec in res:
@@ -234,4 +313,3 @@ def getFullRecipe(request):
         filename = "rec" + str(res['rec_id'])
         res['url'] = findPhoto(filename)['url']
         return JsonResponse(res, safe = False)
-        # return JsonResponse("Incomplete", safe= False)
