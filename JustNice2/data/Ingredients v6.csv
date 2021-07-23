@@ -46,7 +46,7 @@ Bok Choy,Vegetables ,g
 Bourbon,Others,ml
 Bran,"Grain, nuts and baking products",g
 Brandy,Others,ml
-Bread,"Pasta, rice and pulses  ",g
+Bread,"Pasta, rice and pulses  ",whole
 Brine,Others,ml
 Brisket,"Meat, sausages and fish",g
 Broccoli,Vegetables ,g
@@ -344,7 +344,7 @@ Squid,"Meat, sausages and fish",g
 Steak,"Meat, sausages and fish",g
 Steak Sauce,Others,ml
 Stock,Others,ml
-Strawberry,Fruits,g
+Strawberry,Fruits,whole
 Sugar,Others,g
 Sugar Snap Pea,Vegetables ,g
 Swiss Cheese,"Eggs, milk and milk products",g

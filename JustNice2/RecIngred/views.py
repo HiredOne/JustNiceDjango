@@ -187,7 +187,7 @@ def getUserRec(request):
 # Search bar for recipes
 def searchRec(request): 
     if request.method == "GET":
-        recipes = Recipe.objects.all()
+        recipes = Recipe.objects.filter(isPublished = True)
         rec_serializer = RecSerializer(recipes, many = True)
         res = rec_serializer.data
         # Now we add the photo url in
@@ -220,6 +220,7 @@ def searchRec(request):
             recipes = Recipe.objects.filter(cuisine__in = keywords)
         elif category == "rec_type":
             recipes = Recipe.objects.filter(rec_type__in = keywords)
+        recipes = recipes.filter(isPublished = True) # Keep only those recipes that are public 
         rec_serializer = RecSerializer(recipes, many = True)
         res = rec_serializer.data
         # Now we add the photo url in
@@ -231,7 +232,7 @@ def searchRec(request):
 @csrf_exempt
 def complexSearch(request): 
     if request.method == "GET":
-        recipes = Recipe.objects.all()
+        recipes = Recipe.objects.filter(isPublished = True)
         rec_serializer = RecSerializer(recipes, many = True)
         res = rec_serializer.data
         # Now we add the photo url in
@@ -249,38 +250,37 @@ def complexSearch(request):
             keywords = rec_data['keywords'].split() # Split the keywords
             # Then we search based on the category given
             if category == "recingred":
-                rec = Recipe.objects.filter(rec_name__icontains = keywords[0])
+                rec = Recipe.objects.filter(rec_name__icontains = keywords[0], isPublished = True)
                 ingredients = Ingredient.objects.filter(ingred_name__icontains = keywords[0]).values("ingred_id")
                 for keyword in keywords[1:]:
-                    rec = rec.union(Recipe.objects.filter(rec_name__icontains = keyword))
+                    rec = rec.union(Recipe.objects.filter(rec_name__icontains = keyword, isPublished = True))
                     ingredients = ingredients.union(Ingredient.objects.filter(ingred_name__icontains = keyword).values("ingred_id"))
                 ingred = Requires.objects.filter(ingred_id__in = ingredients)
                 recingred = rec.union(ingred).values("rec_id")
                 if res.exists():
-                    res = res.intersection(Recipe.objects.filter(rec_id__in = recingred))
+                    res = res.intersection(Recipe.objects.filter(rec_id__in = recingred, isPublished = True))
                 else:
-                    res = res.union(Recipe.objects.filter(rec_id__in = recingred))
+                    res = res.union(Recipe.objects.filter(rec_id__in = recingred, isPublished = True))
             elif category == "cooking_time":
                 if res.exists():
-                    res = res.intersection(Recipe.objects.filter(cooking_time__icontains = float(keywords[0])))
+                    res = res.intersection(Recipe.objects.filter(cooking_time__icontains = float(keywords[0]), isPublished = True))
                 else:
-                    res = res.union(Recipe.objects.filter(cooking_time__icontains = float(keywords[0])))
+                    res = res.union(Recipe.objects.filter(cooking_time__icontains = float(keywords[0]), isPublished = True))
             elif category == "serving_pax":
                 if res.exists():
-                    res = res.intersection(Recipe.objects.filter(serving_pax__icontains = int(keywords[0])))
+                    res = res.intersection(Recipe.objects.filter(serving_pax__icontains = int(keywords[0]), isPublished = True))
                 else:
-                    res = res.union(Recipe.objects.filter(serving_pax__icontains = int(keywords[0])))
+                    res = res.union(Recipe.objects.filter(serving_pax__icontains = int(keywords[0]), isPublished = True))
             elif category == "cuisine":
                 if res.exists():
-                    res = res.intersection(Recipe.objects.filter(cuisine__in = keywords))
+                    res = res.intersection(Recipe.objects.filter(cuisine__in = keywords, isPublished = True))
                 else:
-                    res = res.union(Recipe.objects.filter(cuisine__in = keywords))
+                    res = res.union(Recipe.objects.filter(cuisine__in = keywords, isPublished = True))
             elif category == "rec_type":
                 if res.exists():
-                    res = res.intersection(Recipe.objects.filter(rec_type__in = keywords))
+                    res = res.intersection(Recipe.objects.filter(rec_type__in = keywords, isPublished = True))
                 else:
-                    res = res.union(Recipe.objects.filter(rec_type__in = keywords))
-            print(res)
+                    res = res.union(Recipe.objects.filter(rec_type__in = keywords, isPublished = True))
         rec_serializer = RecSerializer(res, many = True)
         res = rec_serializer.data
         # Now we add the photo url in
