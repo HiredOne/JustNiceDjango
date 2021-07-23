@@ -32,6 +32,6 @@ urlpatterns = [
     path('updatephoto/', updatePhoto),
     path('getphoto/', getPhoto),
     path('getphoto/<str:filename>/', dynamicPhoto),
-    path('populate/', populate), # Only enabled locally for ingred population
-    path('poprec/', populateRec), # Only enabled locally for rec population
+    # path('populate/', populate), # Only enabled locally for ingred population
+    # path('poprec/', populateRec), # Only enabled locally for rec population
 ] + static(settings.MEDIA_URL , document_root = settings.MEDIA_ROOT)

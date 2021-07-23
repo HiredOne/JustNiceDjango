@@ -15,7 +15,8 @@ from sharedfiles.views import findPhoto, nameMaker
 
 # Create your views here
 
-# This view is used to populate the db with the desired stuff 
+# These 2 views are used to populate the db with the desired stuff 
+# ENABLE THE URLS FIRST BEFORE RUNNING THEM.
 # ONLY TO BE DONE LOCALLY 
 @csrf_exempt
 def populate(request):
