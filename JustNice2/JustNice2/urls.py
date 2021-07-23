@@ -20,7 +20,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from sharedfiles.views import *
-from .views import populate, home
+from .views import populate, populateRec, home
 
 urlpatterns = [
     path('', home),
@@ -32,5 +32,6 @@ urlpatterns = [
     path('updatephoto/', updatePhoto),
     path('getphoto/', getPhoto),
     path('getphoto/<str:filename>/', dynamicPhoto),
-    path('populate/', populate),
+    path('populate/', populate), # Only enabled locally for ingred population
+    path('poprec/', populateRec), # Only enabled locally for rec population
 ] + static(settings.MEDIA_URL , document_root = settings.MEDIA_ROOT)
