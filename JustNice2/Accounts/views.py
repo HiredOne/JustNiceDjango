@@ -44,15 +44,22 @@ def userApi(request, id = 0, *args, **kwargs):
             return JsonResponse(f"Failed to add due to: {errors}", safe = False)
     elif request.method == "PUT":
         user_data = JSONParser().parse(request)
-        user = User.objects.get(username = user_data['username'])
+        user = User.objects.filter(username = user_data['username'])
         if 'password' in user_data:
             new_pwd = make_password(user_data['password'])
             user_data['password'] = new_pwd
-        users_serializer = UserSerializer(user, data = user_data)
-        if users_serializer.is_valid():
-            users_serializer.save()
+        try:
+            user.update(**user_data)
+            # for i in user:
+            #     i.save()
             return JsonResponse("Updated Successfully", safe = False)
-        return JsonResponse("Failed to update", safe = False)
+        # users_serializer = UserSerializer(user, data = user_data)
+        # if users_serializer.is_valid():
+        #     users_serializer.save()
+        #     return JsonResponse("Updated Successfully", safe = False)
+        # print(users_serializer.errors)
+        except:
+            return JsonResponse("Failed to update", safe = False)
     elif request.method == "DELETE": # Delete user and profile pic 
         user = User.objects.get(id = id) # Get user 
         filename = "user" + str(user.id)
