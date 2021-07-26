@@ -50,8 +50,6 @@ def userApi(request, id = 0, *args, **kwargs):
             user_data['password'] = new_pwd
         try:
             user.update(**user_data)
-            # for i in user:
-            #     i.save()
             return JsonResponse("Updated Successfully", safe = False)
         # users_serializer = UserSerializer(user, data = user_data)
         # if users_serializer.is_valid():

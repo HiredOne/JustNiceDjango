@@ -142,4 +142,10 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Enabling CORS on all domains 
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
+
+# Enabling CORS on our heroku app only
+CORS_ALLOWED_ORIGINS = [
+'http://localhost:3000/',
+'https://justnice.herokuapp.com/',
+]
