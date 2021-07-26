@@ -245,6 +245,7 @@ def complexSearch(request):
     elif request.method == "POST":
         data = JSONParser().parse(request)
         res = Recipe.objects.filter(rec_id = 0)
+        counter = 1
         for rec_data in data:
             category = rec_data['category'] # Get the category
             keywords = rec_data['keywords'].split() # Split the keywords
@@ -259,28 +260,29 @@ def complexSearch(request):
                 recingred = rec.union(ingred).values("rec_id")
                 if res.exists():
                     res = res.intersection(Recipe.objects.filter(rec_id__in = recingred, isPublished = True))
-                else:
+                elif counter != len(data):
                     res = res.union(Recipe.objects.filter(rec_id__in = recingred, isPublished = True))
             elif category == "cooking_time":
                 if res.exists():
                     res = res.intersection(Recipe.objects.filter(cooking_time__icontains = float(keywords[0]), isPublished = True))
-                else:
+                elif counter != len(data):
                     res = res.union(Recipe.objects.filter(cooking_time__icontains = float(keywords[0]), isPublished = True))
             elif category == "serving_pax":
                 if res.exists():
                     res = res.intersection(Recipe.objects.filter(serving_pax__icontains = int(keywords[0]), isPublished = True))
-                else:
+                elif counter != len(data):
                     res = res.union(Recipe.objects.filter(serving_pax__icontains = int(keywords[0]), isPublished = True))
             elif category == "cuisine":
                 if res.exists():
                     res = res.intersection(Recipe.objects.filter(cuisine__in = keywords, isPublished = True))
-                else:
+                elif counter != len(data):
                     res = res.union(Recipe.objects.filter(cuisine__in = keywords, isPublished = True))
             elif category == "rec_type":
                 if res.exists():
                     res = res.intersection(Recipe.objects.filter(rec_type__in = keywords, isPublished = True))
-                else:
+                elif counter != len(data):
                     res = res.union(Recipe.objects.filter(rec_type__in = keywords, isPublished = True))
+            counter += 1
         rec_serializer = RecSerializer(res, many = True)
         res = rec_serializer.data
         # Now we add the photo url in
