@@ -146,6 +146,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Enabling CORS on our heroku app only
 CORS_ALLOWED_ORIGINS = [
-'http://localhost:3000/',
-'https://justnice.herokuapp.com/',
+'http://localhost:3000',
+'https://justnice.herokuapp.com',
 ]
