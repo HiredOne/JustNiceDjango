@@ -28,7 +28,7 @@ matplotlib==3.4.2
 mccabe==0.6.1
 multidict==5.1.0
 mysql-connector-python==8.0.25
-numpy==1.20.3
+numpy==1.21.0
 olefile==0.46
 packaging==20.9
 Pillow==9.0.0
