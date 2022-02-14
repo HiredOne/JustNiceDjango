@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@next"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <h1> {{text}} </h1>
+        <h2 v-text = "message"></h2>
+        <h2 v-text = "dirHTML"></h2>
+        <h2 v-html = "dirHTML"></h2>
+        <button v-on:click = "changetext()"> Try Me</button>
+        <br>
+        <a v-bind:href = "website"> {{msg}} </a>
+        <br>
+        <a href="https://www.nus.edu.sg"> NUS2</a>
+        <br>
+        <input type = "text" v-model.lazy="entry" placeholder="Type here">
+        <h1> {{entry}} </h1>
+    </div>
+</body>
+
+<script>
+    const HelloWorld = {
+        data() {
+            return {
+                text : "Hello World Changed!!!",
+                message: "Hello from a directive.",
+                dirHTML: "<h1> This is html </h1>",
+                website : "https://www.nus.edu.sg",
+                msg: "NUS",
+                entry: ""               
+            }
+        },
+
+        methods : {
+            changetext() {
+                this.text = "V-on mtd called!!"
+            }
+        }
+    }
+
+    console.log(HelloWorld);
+    Vue.createApp(HelloWorld).mount('#app')
+</script>
+
+</html>

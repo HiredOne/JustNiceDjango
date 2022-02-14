@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .main{
+            background-color: aqua;
+            width: 600px;
+            height: 600px;
+        }
+
+        #first, #second, #third, #fourth{
+            height: 280px;
+            width: 280px;
+            background-color: blue;
+            float: right;
+            border: 10px solid black;
+            font-size: 30px;
+        }
+
+        #third, #fourth{
+            background-color: orange;
+        }
+
+        #first:hover{
+            background-color: red;
+        }
+        
+        #second:hover{
+            background-color: aliceblue;
+        }
+
+    </style>
+
+</head>
+<body>
+    <div class="main">
+        <div id='first'> This is the first div </div>
+        <div id='second'> This is the second div </div>
+        <div id='third'> This is the third div </div>
+        <div id='fourth'> This is the fourth div </div>
+    </div>
+
+    <form id ='userForm'>
+        <h1 class="headerDiv">Add Coins </h1>
+        <label for="coin1">Coin Name: </label>
+        <input type="text" id="coin1" required="" placeholder="Enter Coin"> <br><br>
+        <label for="ticker1">Ticker: </label>
+        <input type="text" id="coin1" required="" placeholder="Valid Ticker"> <br><br>
+        <label for="buy1">Buy Price: </label>
+        <input type="number" id="buy1" required="" placeholder="Buy Price"> <br><br>
+        <label for="quant1">Buy Quantity: </label>
+        <input type="number" id="quant1" required="" placeholder="Quantity"> <br><br>
+
+        <button id= "savebutton" type="button"> Save </button><br><br>
+    </form>
+</body>
+</html>

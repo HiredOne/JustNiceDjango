@@ -1,0 +1,327 @@
+# Should your fund invest in Bitcoin?
+
+## 📖 Background
+We are analysts at an investment fund in New York. Our CFO wishes to explore if if it is a good idea to invest some of the fund's assets in Bitcoin. This report aims to facilitate decision making pertaining to whether one should invest in Bitcoin, and hence covers the following 3 aspects: 
+
+1) Bitcoin's performance relative to S&P 500 and the price of gold. 
+2) Bitcoin's returns and volatility profile, as well as its usability as a hedge versus inflation.
+3) A sample portfolio using Bitcoin, S&P 500 and gold which minimizes overall risk.
+
+---
+
+## 💾 The Data
+The analysis in this report has done based on the following 3 sources of information. 
+
+* Bitcoin Daily Data in US Dollars
+  + This dataset covers Bitcoin's daily performance from 17 September 2014 to 17 November 2021
+
+* S&P 500 Daily Data
+  + This dataset covers S&P 500's daily performance from 17 September 2014 to 17 November 2021
+
+* Inflation and Gold Prices
+  + This dataset contains the **monthly** gold prices and inflation index for the US from 17 September 2014 to 17 November 2021
+  + The CPI data is publicly available information from the U.S. Bureau of Labor Statistics (https://www.bls.gov/cpi/). 
+
+## <Pin emoji> Data Preparation
+To begin, we will load the necessary libraries for use.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+```{r load_lib}
+library(tidyverse) 
+library(dplyr)
+library(psych)
+library(moments)
+```
+---
+
+Next, let us load and take a glimpse at the data provided.
+```{r prep_data}
+bitcoin <- readr::read_csv('./data/bitcoin-usd.csv')
+head(bitcoin)
+sp500 <- readr::read_csv('./data/sp500.csv')
+head(sp500)
+monthly_data <- readr::read_csv('./data/monthly_data.csv')
+head(monthly_data)
+```
+---
+
+Before we begin analysing the data, we will have to carry out some data cleaning to handle null values and/or potential outliers. To ensure that the analysis is purely based on empirical data, **we have chosen to remove the null values and retain outliers**.
+
+```{r datacleaning}
+summary(bitcoin) # NA values present
+summary(sp500) # No NA values
+summary(monthly_data) # No NA values
+btc_clean <- na.omit(bitcoin) # Remove NA for Bitcoin
+
+# Now we carry out an outlier analysis for the closing prices of Bitcoin, S&P 500 and gold
+btc_box <- boxplot(btc_clean$close, horizontal = F, range = 1.5, col = '#00FFFF', xlab = 'Closing Prices', ylab = 'Closing prices of Bitcoin', main = 'Boxplot of Bitcoin Closing Prices with range = 1.5') # Bitcoin
+length(btc_box$out)
+
+sp500_box <- boxplot(sp500$close, horizontal = F, range = 1.5, col = '#00FFFF', xlab = 'Closing Prices', ylab = 'Closing prices of S&P 500', main = 'Boxplot of S&P 500 Closing Prices with range = 1.5') # SP500
+length(sp500_box$out)
+
+gold_box <- boxplot(monthly_data$gold_usd, horizontal = F, range = 1.5, col = '#00FFFF', xlab = 'Gold Prices', ylab = 'Price of Gold', main = 'Boxplot of Gold Prices with range = 1.5') # Gold
+length(gold_box$out)
+```
+
+The simple outlier analysis carried out during the data cleaning step has revealed a large number of outlier closing prices for bitcoin, and little to none for S&P 500 and gold, which may hint that Bitcoin is likely to have a relatively volatile profile. The complete analysis for Bitcoin's volatility profile will be done in the later parts of this report. On this note, since the data is cleaned, we can begin our analysis. 
+
+---
+
+## <Stock emoji> Performance Analysis
+We will start by analysing the performance of Bitcoin, relative to S&P 500 and gold.  
+\
+Based on the glimpse we had of the Bitcoin and S&P 500 data earlier, it is clear that there are some dates where we only have data from either one of the assets. In addition, we only have the monthly prices for gold. As such, we will carry out 2 separate price spreads for Bitcoin and S&P 500, and for Bitcoin and gold to compare their relative performance. 
+
+*Note: We have omitted the 1 day and 5 day calculations for gold from our table, as we do not have the necessary data on gold for these calculations. 
+
+```{r perf_analysis_plot}
+# Bitcoin and S&P500 Closing Plot
+ggplot(bitcoin, aes(x = date, y = close)) + geom_line() + geom_line(data = sp500, color = "red") + labs(x = 'Date', y = 'Prices at Closing') + ggtitle('Bitcoin and S&P500 Closing Plot')
+
+# Bitcoin and Gold Closing Plot
+ggplot(bitcoin, aes(x = date, y = close)) + geom_line() + geom_line(data = monthly_data, aes(x = date, y = gold_usd), color = "blue") + labs(x = 'Date', y = 'Prices at Closing') + ggtitle('Bitcoin and Gold Closing Plot')
+
+#S&P500 and Gold Closing Plot
+ggplot(sp500, aes(x = date, y = close)) + geom_line(color = "red") + geom_line(data = monthly_data, aes(x = date, y = gold_usd), color = "blue") + labs(x = 'Date', y = 'Prices at Closing') + ggtitle('S&P500 and Gold Closing Plot')
+
+# All together 
+ggplot(bitcoin, aes(x = date, y = close)) + geom_line() + geom_line(data = sp500, color = "red") + geom_line(data = monthly_data, aes(x = date, y = gold_usd), color = "blue") + labs(x = 'Date', y = 'Prices at Closing') + ggtitle('Bitcoin and S&P500 Closing Plot')
+```
+
+```{r innerjoined}
+# Calculate closing price returns for 3 assets, join the data to obtain common dates, then plot price against date. 
+btc_percentage <- (tail(btc_clean$close, n=1) - head(btc_clean$close, n=1))/head(btc_clean$close, n=1)
+```
+
+```{r innerjoined2}
+# Calculate closing price returns for 3 assets, join the data to obtain common dates, then plot price against date. 
+bs_merged <- merge(bitcoin, sp500, by = "date")
+bg_merged <- merge(bitcoin, monthly_data, by = "date")
+bsg_merged <- merge(bs_merged, bg_merged, by = "date")
+
+# Bitcoin and S&P500 Closing Plot
+ggplot(bs_merged, aes(x = date, y = close.x)) + geom_line() + geom_line(data = bs_merged, aes(x = date, y = close.y), color = "red") + labs(x = 'Date', y = 'Prices at Closing') + ggtitle('Bitcoin and S&P500 Closing Plot')
+
+# Bitcoin and Gold Closing Plot
+ggplot(bg_merged, aes(x = date, y = close)) + geom_line() + geom_line(data = bg_merged, aes(x = date, y = gold_usd), color = "blue") + labs(x = 'Date', y = 'Prices at Closing') + ggtitle('Bitcoin and Gold Closing Plot')
+
+# All together 
+ggplot(bsg_merged, aes(x = date, y = close.x)) + geom_line() + geom_line(data = bs_merged, aes(x = date, y = close.y), color = "red") + geom_line(data = bsg_merged, aes(x = date, y = gold_usd), color = "blue") + labs(x = 'Date', y = 'Prices at Closing') + ggtitle('Bitcoin and S&P500 Closing Plot')
+```
+
+Based on the price spreads above, it can be seen that Bitcoin has grown from **<first closing price>** to **<last closing price>** which is a **(large?) <% growth>**, while S&P 500 has grown from **<first closing price>** to **<last closing price>** which is a **(large?) <% growth>**. Finally, gold has risen from **<first closing price>** to **<last closing price>** which is a **(large?) <% growth>**. At first glance, this initial analysis suggests that Bitcoin is performing relatively **<btr/worse>** than S&P 500 and gold, making Bitcoin appear as a **<(not) promising>** asset to invest in. While this is a good start, it is insufficient and we have to look at Bitcoin's returns and volatility profile in order to get the full picture of Bitcoin's suitability as an asset to invest in.  
+
+## <Dollar emoji> Returns and Volatility Profile (Consider relative returns against SP500 & Gold?)
+To analyse Bitcoin's returns profile, we have created the following table below. This table displays the 1 day, 5 day, 1 month, 6 month, 1 year, 5 year and all time (based on data) absolute and annualised returns for Bitcoin, S&P 500 and gold. The absolute returns column allows us to get a quick look at the simple returns on investment for Bitcoin, which is independent of the performance of the other assets. On the other hand, annualised returns will allow us to see the effects of compounding and help us in determining if Bitcoin is a good asset to invest in over the long term.
+
+```{r prep_calc_data}
+#Dataset loaded for calculation of returns. Hence are vectorised, and not dataframes. 
+btc_calc1 <- read.csv('./data/bitcoin-usd.csv', header = T, stringsAsFactors = F)
+btc_calc <- na.omit(btc_calc1) # Remove NA for Bitcoin
+head(btc_calc)
+sp_calc <- read.csv('./data/sp500.csv', header = T, stringsAsFactors = F)
+head(sp_calc)
+gold_calc <- read.csv('./data/monthly_data.csv', header = T, stringsAsFactors = F)
+head(gold_calc)
+
+#Bitcoin
+btc_closingDate <- subset(btc_calc, select=c("date", "close")) #Extract date and close cols 
+bitcoin_prices <- btc_closingDate[, "close", drop = FALSE]
+rownames(bitcoin_prices) <- btc_calc$date #Make date as row name
+head(bitcoin_prices)
+
+#S&P500
+sp_closingDate <- subset(sp_calc, select=c("date", "close")) #Extract date and close cols 
+sp_prices <- sp_closingDate[, "close", drop = FALSE]
+rownames(sp_prices) <- sp_calc$date #Make date as row name
+head(sp_prices)
+
+#Gold (monthly)
+gold_closingDate <- subset(gold_calc, select=c("date", "gold_usd")) #Extract date and close cols 
+gold_prices <- gold_closingDate[, "gold_usd", drop = FALSE]
+rownames(gold_prices) <- gold_calc$date #Make date as row name
+head(gold_prices)
+```
+
+### (BTC) Compute Simple Returns
+```{r BTC_simp}
+# Denote n the number of time periods:
+n <- nrow(bitcoin_prices) #Calculates price difference for all time periods. 
+bitcoin_ret <- ((bitcoin_prices[2:n, 1] - bitcoin_prices[1:(n-1), 1])/bitcoin_prices[1:(n-1), 1]) 
+  # bitcoin_prices[2:n, 1] vector contains all prices, except the price on the first day.
+  # bitcoin_prices[1:(n-1), 1] vector all prices, except the price on the last day.
+  # Given the fact that R takes the element-wise difference of these vectors, we will get Pt - Pt-1 for every “t”.
+
+names(bitcoin_ret) <- btc_closingDate[2:n, 1] #Add date 
+head(bitcoin_ret)
+```
+
+### (BTC) Compute Continuously Compounded Returns
+```{r BTC_comp}
+# Compute continuously compounded 1-month returns
+bitcoin_retCC <- log(bitcoin_prices[2:n, 1]) - log(bitcoin_prices[1:(n-1), 1])
+
+# Assign names to the continuously compounded 1-month returns
+names(bitcoin_retCC) <- btc_closingDate[2:n, 1]
+
+# Compare the simple and cc returns
+head(cbind(bitcoin_ret, bitcoin_retCC))
+
+# Plot the returns on the same graph
+plot(bitcoin_ret, type = "l", col = "blue", lwd = 2, ylab = "Return",
+               main = "Daily Returns on BTC")
+# Add horizontal line at zero
+abline(h = 0)
+# Add a legend
+legend(x = "bottomright", legend = c("Simple", "CC"), lty = 1, 
+       lwd = 2, col = c("blue", "red"))
+# Add the continuously compounded returns
+lines(bitcoin_retCC, col = "red", lwd = 2)
+```
+
+### (S&P500) Compute Simple Returns
+```{r sp500_simp}
+n <- nrow(sp_prices) #Calculates price difference for all time periods. 
+sp_ret <- ((sp_prices[2:n, 1] - sp_prices[1:(n-1), 1])/sp_prices[1:(n-1), 1]) 
+
+names(sp_ret) <- sp_closingDate[2:n, 1] #Add date 
+head(sp_ret)
+```
+
+### (S&P500) Compute Continuously Compounded Returns
+```{r sp500_comp}
+# Compute continuously compounded 1-month returns
+sp_retCC <- log(sp_prices[2:n, 1]) - log(sp_prices[1:(n-1), 1])
+
+# Assign names to the continuously compounded 1-month returns
+names(sp_retCC) <- sp_closingDate[2:n, 1]
+
+# Compare the simple and cc returns
+head(cbind(sp_ret, sp_retCC))
+
+# Plot the returns on the same graph
+plot(sp_ret, type = "l", col = "blue", lwd = 2, ylab = "Return",
+               main = "Daily Returns on S&P500")
+# Add horizontal line at zero
+abline(h = 0)
+# Add a legend
+legend(x = "bottomright", legend = c("Simple", "CC"), lty = 1, 
+       lwd = 2, col = c("blue", "red"))
+# Add the continuously compounded returns
+lines(sp_retCC, col = "red", lwd = 2)
+```
+
+### (Gold) Compute Simple Returns
+```{r gold_simp}
+n <- nrow(gold_prices) #Calculates price difference for all time periods. 
+gold_ret <- ((gold_prices[2:n, 1] - gold_prices[1:(n-1), 1])/gold_prices[1:(n-1), 1]) 
+
+names(gold_ret) <- gold_closingDate[2:n, 1] #Add date 
+head(gold_ret)
+```
+
+### (Gold) Compute Continuously Compounded Returns
+```{r gold_comp}
+# Compute continuously compounded 1-month returns
+gold_retCC <- log(gold_prices[2:n, 1]) - log(gold_prices[1:(n-1), 1])
+
+# Assign names to the continuously compounded 1-month returns
+names(gold_retCC) <- gold_closingDate[2:n, 1]
+
+# Compare the simple and cc returns
+head(cbind(gold_ret, gold_retCC))
+
+# Plot the returns on the same graph
+plot(gold_ret, type = "l", col = "blue", lwd = 2, ylab = "Return",
+               main = "Monthly Returns on Gold")
+# Add horizontal line at zero
+abline(h = 0)
+# Add a legend
+legend(x = "topleft", legend = c("Simple", "CC"), lty = 1, 
+       lwd = 2, col = c("blue", "red"))
+# Add the continuously compounded returns
+lines(gold_retCC, col = "red", lwd = 2)
+```
+
+```{r returns_table}
+# Calculate 1 day, 5 day, 1 month, 6 month, 1 year, 5 year and all time (based on data) absolute and annualised returns for Bitcoin, S&P 500 and gold
+```
+
+The results of the table are **<(not) promising>** as it **<backs/ does not back>** our previous analysis above. It shows that Bitcoin has a **<(Sig?) higher/lower>** annualised return rate of **<btc max annualised return>** than S&P 500's **<sp500 max annualised return>**, and gold's **<gold max annualised return>**, which suggest that Bitcoin has a good returns profile. **The relative returns of Bitcoin against S&P 500 and gold are also supportive of our analysis above.**  
+\
+Moving on, let us analyse the volatility profile of Bitcoin. This is important in helping us to determine the risks involved when investing in Bitcoin. We have chosen the standard deviation (SD), skewness, kurtosis and correlation of closing prices as our 4 indicators to draft Bitcoin's volatility profile. These 4 indicators are commonly used when analysing an asset's volatility and also complement each other to give a relatively full picture of Bitcoin's volatility profile. 
+
+```{r volatility}
+# Calculate SD, skewness, kurtosis for Bitcoin, S&P 500 and gold. Calculate corr for Btc and S&P, and Btc & gold. Put all the values in a table
+#Bitcoin
+btc_sd <- sd(btc_calc$close)
+btc_skew <- skewness(btc_calc$close)
+btc_kurtosis <- kurtosis(btc_calc$close)
+
+#S&P500
+sp_sd <- sd(sp_calc$close)
+sp_skew <- skewness(sp_calc$close)
+sp_kurtosis <- kurtosis(sp_calc$close)
+
+#Gold
+gold_sd <- sd(gold_calc$gold_usd)
+gold_skew <- skewness(gold_calc$gold_usd)
+gold_kurtosis <- kurtosis(gold_calc$gold_usd)
+
+#Correlation between BTC & SP500
+bs_combined <- merge(btc_calc, sp_calc, by = "date")
+bs_cor <- cor(bs_combined$close.x, bs_combined$close.y)
+
+#Correlation between BTC & Gold
+bg_combined <- merge(btc_calc, gold_calc, by = "date")
+bg_cor <- cor(bg_combined$close, bg_combined$gold_usd)
+
+#Table
+setNames(c(btc_sd, btc_skew, btc_kurtosis,sp_sd, sp_skew, sp_kurtosis, gold_sd, gold_skew, gold_kurtosis, bs_cor, bg_cor ),c('btc_sd', 'btc_skew', 'btc_kurtosis','sp_sd', 'sp_skew', 'sp_kurtosis', 'gold_sd', 'gold_skew', 'gold_kurtosis','bs_cor', 'bg_cor')) # Print
+```
+
+Firstly, SD is a measure of the dispersion of data (closing prices) from its mean. Bitcoin has a SD of **<sd>**, which is **<%> higher/lower** than S&P 500's SD and **<%> higher/lower** than gold's SD. This reflects that Bitcoin's performance is **(sig?) more/less** volatile than S&P 500 and gold over time and this **(lack of) stability (does not) pose** a risk when investing in Bitcoin. However, this does not tell us the probability of obtaining extreme values of closing prices, which we can get an idea of when we look at kurtosis and skewness.  
+\
+Next, the kurtosis and skewness for Bitcoin's closing prices are **<kurtosis>** and **<skewness>** respectively. The skewness suggests that the closing prices are skewed to the **<left/right>** which suggest that there is a high probability of obtaining closing prices **<higher/lower>** than the mean, and a low probability of obtaining a very **<high/low>** closing price.  
+\
+The **<+ve/-ve>** kurtosis suggests that there is a **<higher/lower>** probability of obtaining closing prices near the mean. However, it also indicates a **<higher/lower>** probability of obtaining extreme closing prices. This combined with our skewness analysis suggests that investing in Bitcoin **<(does not) bear a great risk** due to the **<high/low>** probability of obtaining extreme closing prices. This also suggests that investing in Bitcoin is likely to generate returns that are **<lower/higher>** than average.  
+\
+Finally, the correlation values of Bitcoin against S&P 500 and gold are **<corr_sp500>** and **<corr_gold>** respectively. The correlation values suggest that Bitcoin's prices **<are (not)>** significantly affected by the performance of S&P 500 and gold, which makes investing in Bitcoin a **<good/bad>** way to diversify risk in a portfolio consisting of S&P 500 and gold. 
+
+To summarise this segment, it appears that Bitcoin has a relatively **<high/low>** volatility profile which makes it a **<risky/not risky>** asset to invest in individually. **<However, when invested in a portfolio consisting of S&P 500 and gold, it may help to diversify risks and improve returns>**. In the next segment, we will look at using Bitcoin has a hedge against inflation.
+
+## <Hedge emoji> Hedge against inflation
+For Bitcoin to be a good hedge against inflation, it must be able to retain/increase its value during periods of inflation. At the moment, gold has been chosen by many as a hedge against inflation due to its steady supply over time and inverse relationship with inflation. To see if Bitcoin is a good hedge, we have plotted its closing prices against the CPI data available, as shown below. 
+
+```{r hedge}
+# Plot CPI and closing prices across time
+ggplot(bg_merged, aes(x = date, y = close)) + geom_line() + labs(x = 'Date', y = 'Prices at Closing') + ggtitle('Bitcoin over time')
+
+ggplot(bg_merged, aes(x = date, y = cpi_us)) + geom_line() + labs(x = 'Date', y = 'CPI') + ggtitle('CPI over time')
+```
+
+The plot above shows that Bitcoin **<has (not)>** managed to retain its price against inflation and this suggests that Bitcoin **<may (not)>** be a good hedge against inflation. At a first glance, **<an investor may hence be able to guard against inflation by including bitcoin in their portfolio>**. However, he/she may have to take into account Bitcoin's volatility profile, because investing in Bitcoin as mentioned previously may increase the risk of the portfolio depending on the other assets in it. Finally, let us take a look at a sample portfolio consisting of gold, S&P 500 and Bitcoin which is aimed at maximising returns while minimising risks. 
+
+## <stock emoji> Sample portfolio
+<to be added>
+
+--- 
+
+(TO BE DELETED) This section covers the rough plan of the report 
+---
+1) Clean the data, some of the dates are missing
+2) Find out how to analyse performance
+---
+
+
+```{r plotting_data}
+ggplot(bitcoin, aes(x = date, y = open)) + geom_line() +  labs(x = 'Date', y = 'Prices at Opening') + ggtitle('Bitcoin Opening Plot') # Bitcoin opening
+ggplot(bitcoin, aes(x = date, y = close)) + geom_line() +  labs(x = 'Date', y = 'Prices at Closing') + ggtitle('Bitcoin Closing Plot') # Bitcoin closing
+ggplot(sp500, aes(x = date, y = open)) + geom_line() +  labs(x = 'Date', y = 'Prices at Opening') + ggtitle('sp500 Opening Plot') # sp500 opening
+ggplot(sp500, aes(x = date, y = close)) + geom_line() +  labs(x = 'Date', y = 'Prices at Closing') + ggtitle('sp500 Closing Plot') # sp500 closing
+ggplot(monthly_data, aes(x = date, y = gold_usd)) + geom_line() +  labs(x = 'Date', y = 'Prices of Gold') + ggtitle('Gold Prices Plot') # Gold prices
+```

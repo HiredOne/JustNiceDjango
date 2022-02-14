@@ -1,0 +1,408 @@
+﻿Ingredient,Count,Category,Base Unit
+ladyfingers,1,Fruits,g
+streusel,1,"Grain, nuts and baking products",g
+adobo seasoning,1,Others,g
+almond,579,"Grain, nuts and baking products",g
+amaretto,41,Others,ml
+anchovy,22,"Meat, sausages and fish",g
+anise,60,Herbs and spices ,g
+apple,462,Fruits,g
+apple juice,149,Fruits,ml
+applesauce,110,Others,g
+apricot,111,Fruits,g
+artichoke,75,Vegetables ,g
+artificial sweetener,15,Others,ml
+arugula,4,Vegetables ,g
+asparagus,38,Vegetables ,g
+avocado,77,Fruits,whole
+bacon,340,"Meat, sausages and fish",g
+baking mix,73,"Grain, nuts and baking products",g
+baking powder,1292,"Grain, nuts and baking products",g
+baking soda,1431,"Grain, nuts and baking products",g
+banana,284,Fruits,whole
+barbecue sauce,34,Others,ml
+barbeque seasoning,2,Others,g
+barley,43,"Grain, nuts and baking products",g
+basil,374,Herbs and spices ,g
+bass,4,"Meat, sausages and fish",g
+batter,1,"Grain, nuts and baking products",g
+bay leaf,192,Herbs and spices ,g
+bean,457,Vegetables ,g
+beef,308,"Meat, sausages and fish",g
+beef rib,2,"Meat, sausages and fish",g
+beef shank,3,"Meat, sausages and fish",g
+beef tenderloin,11,"Meat, sausages and fish",g
+beer,107,Others,ml
+beet,19,Vegetables ,g
+bell pepper,857,Vegetables ,g
+berry,24,Fruits,g
+biscuit,29,"Grain, nuts and baking products",g
+bitters,7,Others,ml
+black pepper,1447,Herbs and spices ,g
+blackberry,31,Fruits,g
+blue cheese,34,"Eggs, milk and milk products",g
+blueberry,110,Fruits,g
+bok choy,11,Vegetables ,g
+bourbon,40,Others,ml
+bran,8,"Grain, nuts and baking products",g
+brandy,82,Others,ml
+bread,669,"Pasta, rice and pulses  ",g
+brine,1,Others,ml
+brisket,12,"Meat, sausages and fish",g
+broccoli,196,Vegetables ,g
+broccoli rabe,1,Vegetables ,g
+brown rice,24,"Pasta, rice and pulses ",g
+brown sugar,1686,"Grain, nuts and baking products",g
+brownie,17,Others,whole
+brussel sprout,1,Vegetables ,g
+bulgur,5,"Grain, nuts and baking products",g
+butter,4456,Fats and oils,g
+buttermilk,237,"Eggs, milk and milk products",ml
+butternut squash,12,Fruits,g
+cabbage,145,Vegetables ,g
+cacao,8,"Grain, nuts and baking products",g
+cajun seasoning,30,Others,g
+cake,372,"Grain, nuts and baking products",whole
+calvados,1,Others,ml
+campari,3,Others,ml
+candy,22,Others,g
+canola oil,45,Fats and oils,ml
+cantaloupe,13,Vegetables ,g
+capers,27,Herbs and spices ,g
+caramel,65,"Grain, nuts and baking products",g
+caraway,35,Herbs and spices ,g
+cardamom,46,Herbs and spices ,g
+carrot,654,Vegetables ,g
+cashew,39,"Grain, nuts and baking products",g
+cauliflower,50,Vegetables ,g
+celery,828,Vegetables ,g
+cereal,206,Others,g
+champagne,13,Others,ml
+chard,5,Vegetables ,g
+cheddar,663,"Eggs, milk and milk products",g
+cheese,476,"Eggs, milk and milk products",g
+cherry,395,Fruits,g
+chestnut,84,"Grain, nuts and baking products",g
+chicken,1448,"Meat, sausages and fish",g
+chicken broth,416,Others,ml
+chickpea,14,"Pasta, rice and pulses  ",g
+chile,75,Herbs and spices ,g
+chile pepper,239,Herbs and spices ,g
+chili,318,Herbs and spices ,g
+chive,59,Vegetables ,g
+chocolate,1677,Fats and oils,g
+cilantro,209,Vegetables ,g
+cinnamon,1387,Herbs and spices ,g
+citron,21,Fruits,g
+citrus,14,Fruits,g
+clam,64,"Meat, sausages and fish",g
+clove,378,Vegetables ,g
+cobbler topping,1,Others,g
+cocktail,58,Others,ml
+cocktail sauce,24,Others,ml
+cocoa,33,"Grain, nuts and baking products",g
+cocoa powder,477,"Grain, nuts and baking products",g
+coconut,537,Fruits,g
+cod,27,"Meat, sausages and fish",g
+coffee,153,"Grain, nuts and baking products",g
+cola,38,Others,ml
+collard greens,4,Vegetables ,g
+cookie,27,Fats and oils,g
+cookies,35,Fats and oils,g
+cooking spray,2,Others,ml
+coriander,34,Vegetables ,g
+corn,296,Vegetables ,g
+corn oil,14,Fats and oils,ml
+corn syrup,269,Others,ml
+cornmeal,99,"Grain, nuts and baking products",g
+cornstarch,367,"Grain, nuts and baking products",g
+cottage cheese,93,"Eggs, milk and milk products",g
+couscous,10,"Grain, nuts and baking products",g
+crab,142,"Meat, sausages and fish",g
+crackers,1,"Grain, nuts and baking products",g
+cranberry,181,Fruits,g
+cranberry sauce,52,Others,ml
+cream,713,"Eggs, milk and milk products",g
+cream cheese,991,"Eggs, milk and milk products",g
+creole seasoning,4,Others,g
+crepes,2,Others,whole
+crescent roll,41,Others,whole
+cucumber,120,Vegetables ,g
+cumin,226,Herbs and spices ,g
+currant,45,Fruits,g
+curry,114,Herbs and spices ,g
+custard,11,Others,g
+dates,128,Fruits,g
+dill,149,Herbs and spices ,g
+dough,29,"Grain, nuts and baking products",g
+dressing,1,Fats and oils,ml
+dried fruit,1,Fruits,g
+duck,4,"Meat, sausages and fish",g
+duck sauce,3,Others,ml
+egg,4880,"Eggs, milk and milk products",whole
+eggplant,45,Vegetables ,g
+endive,2,Vegetables ,g
+escarole,5,Vegetables ,g
+fajita seasoning,1,Others,g
+fat,3,Fats and oils,ml
+fennel,25,Herbs and spices ,g
+fig,21,Fruits,g
+file powder,1,Herbs and spices ,g
+filling,15,Others,g
+fish,16,"Meat, sausages and fish",g
+flour,4158,"Grain, nuts and baking products",g
+fontina,5,"Eggs, milk and milk products",g
+food coloring,142,Others,ml
+frosting,5,Others,g
+fruit,113,Fruits,g
+fruit juice,16,Fruits,ml
+ganache,2,"Grain, nuts and baking products",g
+garlic,2116,Vegetables ,g
+gelatin,72,Fats and oils,g
+ghee,2,"Eggs, milk and milk products",g
+gin,18,Others,ml
+ginger,461,Vegetables ,g
+goat cheese,13,"Eggs, milk and milk products",g
+golden syrup,10,Others,ml
+goose,3,"Meat, sausages and fish",g
+grains,66,"Grain, nuts and baking products",g
+grand marnier,5,Others,ml
+granola,10,"Grain, nuts and baking products",g
+grape,87,Fruits,g
+grapefruit,5,Fruits,g
+gravy,16,Others,ml
+green bean,120,Vegetables ,g
+green onion,552,Vegetables ,g
+green pepper,1,Vegetables ,g
+ground beef,426,"Meat, sausages and fish",g
+ground lamb,6,"Meat, sausages and fish",g
+guava,3,Fruits,g
+gum drop,3,Others,g
+gumdrop,10,Others,g
+gummi,3,Others,g
+haddock,5,"Meat, sausages and fish",g
+halibut,10,"Meat, sausages and fish",g
+ham,470,"Meat, sausages and fish",g
+hazelnut,50,"Grain, nuts and baking products",g
+herb,16,Herbs and spices ,g
+honey,353,Fats and oils,ml
+honeydew,5,Fruits,g
+horseradish,66,Vegetables ,g
+hot pepper,206,Fruits,g
+ice,133,Others,g
+ice cream,81,Others,g
+icing,2,"Grain, nuts and baking products",g
+italian seasoning,59,Others,g
+kale,8,Vegetables ,g
+ketchup,205,Others,ml
+kirsch,3,Others,ml
+kiwi,16,Fruits,g
+kumquat,3,Fruits,g
+lamb,11,"Meat, sausages and fish",g
+lamb chop,1,"Meat, sausages and fish",g
+lamb shank,1,"Meat, sausages and fish",g
+lard,30,Fats and oils,g
+lasagna,30,Others,whole
+lavender flower,2,Herbs and spices ,g
+lecithin,3,Fats and oils,g
+leek,39,Vegetables ,g
+lemon,636,Fruits,g
+lemon juice,899,Fruits,ml
+lentil,37,Vegetables ,g
+lettuce,171,Vegetables ,g
+lima bean,17,Vegetables ,g
+lime,115,Fruits,g
+lime juice,164,Fruits,ml
+liqueur,158,Others,ml
+lobster,11,"Meat, sausages and fish",g
+lychee,2,Fruits,g
+macadamia nut,25,"Grain, nuts and baking products",g
+macaroni,68,"Pasta, rice and pulses  ",g
+macaroni and cheese,4,Others,g
+mace,26,Herbs and spices ,g
+mango,27,Fruits,g
+maple syrup,70,Others,ml
+margarine,537,Fats and oils,g
+margarita,3,Others,ml
+marjoram,51,Herbs and spices ,g
+marsala,14,Others,ml
+marshmallow,230,Others,g
+mayonnaise,576,Others,g
+meat,34,"Meat, sausages and fish",g
+meatball,6,"Meat, sausages and fish",g
+milk,2767,"Eggs, milk and milk products",ml
+mint,47,Herbs and spices ,g
+molasses,155,Others,g
+monterey jack,106,"Eggs, milk and milk products",g
+mozzarella,201,"Eggs, milk and milk products",g
+muffin,26,Others,whole
+mushroom,703,Vegetables ,g
+mussel,9,"Meat, sausages and fish",g
+mustard,443,Others,ml
+nectarine,5,Fruits,g
+noodle,124,"Pasta, rice and pulses  ",g
+nut,46,"Grain, nuts and baking products",g
+nutmeg,635,Herbs and spices ,g
+oat,430,"Grain, nuts and baking products",g
+oatmeal,1,"Grain, nuts and baking products",g
+okra,12,Vegetables ,g
+olive,1153,Fruits,g
+onion,2763,Vegetables ,g
+orange,438,Fruits,g
+orange juice,356,Fruits,ml
+oregano,391,Herbs and spices ,g
+oyster,41,"Meat, sausages and fish",g
+pancake,5,Others,g
+papaya,2,Fruits,g
+paprika,270,Herbs and spices ,g
+parmesan,416,"Eggs, milk and milk products",g
+parsley,642,Vegetables ,g
+parsnip,18,Vegetables ,g
+passion fruit,5,Fruits,g
+pasta,247,"Pasta, rice and pulses  ",g
+pastry,253,Others,whole
+pea,163,Vegetables ,g
+peach,122,Fruits,g
+peanut,129,"Grain, nuts and baking products",g
+peanut butter,407,Fats and oils,g
+peanut oil,28,Fats and oils,ml
+pear,34,Fruits,g
+pecan,707,"Grain, nuts and baking products",g
+pepper,1572,Herbs and spices ,g
+persimmon,14,Fruits,g
+pickles,93,Vegetables ,g
+pie,118,Others,whole
+pimento,85,Vegetables ,g
+pine nut,25,"Grain, nuts and baking products",g
+pineapple,434,Fruits,g
+pistachio,43,"Grain, nuts and baking products",g
+pizza,33,Others,whole
+plantain,3,Fruits,g
+plum,14,Fruits,g
+poblano,4,Vegetables ,g
+pomegranate,2,Fruits,g
+pomegranate juice,1,Fruits,ml
+poppy,61,Others,g
+pork,101,"Meat, sausages and fish",g
+pork chop,97,"Meat, sausages and fish",g
+pork rib,10,"Meat, sausages and fish",g
+pork tenderloin,23,"Meat, sausages and fish",g
+port,11,Others,ml
+potato,794,"Pasta, rice and pulses  ",g
+pretzel,34,Others,whole
+prosciutto,12,"Meat, sausages and fish",g
+prune,26,Fruits,g
+pudding,2,Others,g
+puff,1,Others,whole
+pumpkin,257,Vegetables ,g
+quinoa,5,"Grain, nuts and baking products",g
+rabbit,1,"Meat, sausages and fish",g
+rack of lamb,1,"Meat, sausages and fish",g
+radicchio,4,Vegetables ,g
+radish,11,Vegetables ,g
+raisin,534,Fruits,g
+raspberry,159,Fruits,g
+red pepper,184,Vegetables ,g
+red wine,216,Others,ml
+rhubarb,40,Vegetables ,g
+rice,218,"Pasta, rice and pulses  ",g
+rice vinegar,20,Herbs and spices ,ml
+ricotta,74,"Eggs, milk and milk products",whole
+rosemary,122,Herbs and spices ,g
+rum,180,Others,ml
+rutabaga,10,Vegetables ,g
+saffron,8,Herbs and spices ,g
+sage,82,Herbs and spices ,g
+sake,2,Others,ml
+salad dressing,237,Fats and oils,ml
+salami,19,"Meat, sausages and fish",g
+salmon,61,"Meat, sausages and fish",g
+salsa,154,Others,g
+salt,4516,Others,g
+sauce,227,Others,ml
+sauerkraut,48,Vegetables ,g
+sausage,280,"Meat, sausages and fish",g
+scallop,29,"Meat, sausages and fish",g
+seed,41,"Grain, nuts and baking products",g
+semolina,6,"Grain, nuts and baking products",g
+sesame,86,"Grain, nuts and baking products",g
+sesame oil,84,Fats and oils,ml
+shallot,41,Vegetables ,g
+sherry,106,Others,ml
+shrimp,190,"Meat, sausages and fish",g
+skewer,21,Others,whole
+snapper,8,"Meat, sausages and fish",g
+soda,8,Others,ml
+sodium,29,Others,g
+sour cream,746,Others,g
+sourdough,28,"Grain, nuts and baking products",g
+soy sauce,359,Others,ml
+spaghetti,106,"Pasta, rice and pulses  ",g
+spice,207,Herbs and spices ,g
+spinach,197,Vegetables ,g
+squash,15,Fruits,g
+squid,8,"Meat, sausages and fish",g
+steak,94,"Meat, sausages and fish",g
+steak sauce,29,Others,ml
+stock,15,Others,ml
+strawberry,277,Fruits,g
+sugar,1255,Others,g
+sugar snap pea,5,Vegetables ,g
+swiss cheese,104,"Eggs, milk and milk products",g
+swordfish,8,"Meat, sausages and fish",g
+syrup,2,Others,ml
+taco,79,Others,g
+tahini,14,"Grain, nuts and baking products",g
+tamarind,3,Fruits,g
+tangerine,2,Fruits,g
+tapioca,27,"Pasta, rice and pulses  ",g
+tarragon,56,Herbs and spices ,g
+tart,3,Others,whole
+tea,193,Others,ml
+tequila,23,Others,ml
+thyme,264,Herbs and spices ,g
+tilapia,2,"Meat, sausages and fish",g
+tofu,48,Vegetables ,g
+tomatillo,7,Fruits,g
+tomato,1200,Fruits,g
+tomato sauce,211,Others,ml
+tortillas,184,Others,g
+triple sec,12,Others,ml
+tropical fruit,1,Fruits,g
+trout,4,"Meat, sausages and fish",g
+tuna,51,"Meat, sausages and fish",g
+turkey,115,"Meat, sausages and fish",g
+turnip,19,Vegetables ,g
+vanilla essence (liquid),3111,Herbs and spices ,ml
+vanilla essence (solid),3111,Herbs and spices ,g
+veal,8,"Meat, sausages and fish",g
+vegetable,200,Vegetables ,g
+vegetable oil,1358,Fats and oils,ml
+venison,11,"Meat, sausages and fish",g
+vermouth,18,Others,ml
+vinaigrette,4,Fats and oils,g
+vinegar,564,Herbs and spices ,ml
+vodka,78,Others,ml
+walnut,1014,"Grain, nuts and baking products",g
+wasabi,7,Vegetables ,g
+water,2606,Others,ml
+watercress,10,Vegetables ,g
+watermelon,8,Fruits,g
+wheat,17,"Grain, nuts and baking products",g
+wheat germ,26,Others,g
+whipping cream,276,"Eggs, milk and milk products",ml
+whiskey,36,Others,ml
+white sugar,4986,Others,g
+white wine,263,Others,ml
+whole wheat,128,"Grain, nuts and baking products",g
+wild rice,41,"Pasta, rice and pulses ",g
+wine,23,Others,ml
+worcestershire sauce,348,Others,ml
+yeast,190,"Grain, nuts and baking products",g
+yellow squash,29,Fruits,g
+yogurt,110,"Eggs, milk and milk products",g
+zest,12,Fruits,g
+zucchini,170,Vegetables ,g
+,,,whole
+,,,g
+,,,ml

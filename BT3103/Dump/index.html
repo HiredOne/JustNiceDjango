@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/ccxt"></script>
+
+    <title>CPP V-1.0</title>
+
+    <script src= "firebasefuncs.js" defer> </script>
+
+</head>
+
+<body>
+    <h1 class= "headerDiv"> Welcome to CPP </h1>
+    <form id= 'userForm'>
+        <h1 class= "headerDiv">Add Coins </h1>
+        <label for="coin1">Coin Name: </label>
+        <input type="text" id="coin1" required="" placeholder="Enter Coin"> <br><br>
+
+        <label for="ticker1">Ticker: </label>
+        <input type="text" id="ticker1" required="" placeholder="Valid Ticker"> <br><br>
+
+        <label for="buy1">Buy Price: </label>
+        <input type="number" id="buy1" required="" placeholder="Buy Price"> <br><br>
+
+        <label for="quant1">Buy Quantity: </label>
+        <input type="number" id="quant1" required="" placeholder="Quantity"> <br><br>
+
+        <button id= "savebutton" type="button" onclick="savetofs()"> Save </button><br><br>
+    </form>
+
+    <h1 class= "headerDiv">Current Portfolio </h1>
+    <table id= "cppTable">
+        <tr id= "tblHeader">
+            <th>S.No</th>
+            <th>Coin</th>
+            <th>Ticker</th>
+            <th>Buy_Price</th>
+            <th>Buy_Quantity</th>
+            <th>Current_Price</th>
+            <th>Profit</th>
+            <th>Options</th>
+        </tr>
+    </table>
+
+    <h1 class= "headerDiv" id="totalProfit">Your Total Profit is : XX$</h1>  
+</body>
+</html>

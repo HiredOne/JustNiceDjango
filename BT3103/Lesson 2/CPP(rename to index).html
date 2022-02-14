@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .headerDiv{
+            background-color: lightpink;
+            /* background-color: gray;             */
+            width: 100vw;
+            height: 100%;
+            text-align: center;
+        }
+
+        #userForm{
+            text-align: center;
+            background-color: lightblue;
+        }
+        
+        #cppTable{
+            border-collapse: collapse;
+            width: 100vw;
+        }
+        
+        th{
+            border: 5px solid lightblue;
+        }
+    </style>
+
+</head>
+<body>
+    <h1 class= "headerDiv"> Welcome to CPP </h1>
+    <form id= 'userForm'>
+        <h1 class= "headerDiv">Add Coins </h1>
+        <label for="coin1">Coin Name: </label>
+        <input type="text" id="coin1" required="" placeholder="Enter Coin"> <br><br>
+
+        <label for="ticker1">Ticker: </label>
+        <input type="text" id="ticker1" required="" placeholder="Valid Ticker"> <br><br>
+
+        <label for="buy1">Buy Price: </label>
+        <input type="number" id="buy1" required="" placeholder="Buy Price"> <br><br>
+
+        <label for="quant1">Buy Quantity: </label>
+        <input type="number" id="quant1" required="" placeholder="Quantity"> <br><br>
+
+        <button id= "savebutton" type="button"> Save </button><br><br>
+    </form>
+
+    <table id= "cppTable">
+        <h1 class= "headerDiv">Current Portfolio </h1>
+        <tr id= "tblHeader">
+            <th>S.No</th>
+            <th>Coin</th>
+            <th>Ticker</th>
+            <th>Buy_Price</th>
+            <th>Buy_Quantity</th>
+            <th>Current_Price</th>
+            <th>Profit</th>
+            <th>Options</th>
+        </tr>
+    </table>
+
+    <h1 class= "headerDiv">Your Total Profit is : XX$</h1>  
+</body>
+</html>
