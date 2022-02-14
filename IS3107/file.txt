@@ -1,7 +1,0 @@
-http: //www . qq. com/ index. html
-http: / / www .qq. com/1.html
-http:/ / www . qq. com/2. html
-http: / /post . qq. com/ index . html
-http: / /mp3. qq. com/ index. html
-http:/ / www . qq. com/3. html
-http: / /post.qq. com/2. html
