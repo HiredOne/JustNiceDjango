@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>ABOUT PAGE</h1>
+<p>This is an about template</p>
+{% endblock %}
+
+<!--This block is used to test the rendering of Context-->
+
+{% block content2 %}
+<h1>We are JustNice</h1>
+<p>
+    {{my_text}}: {{my_number}}
+    {{my_list}}
+</p>
+
+<ul>
+    <li>Item 1</li>
+    <li>Item 2</li>
+</ul>
+
+<ul>
+    {% for abc in my_list %}
+        {% if abc == 123 %}
+            <li>{{forloop.counter}} - {{ abc|add:22}}</li>
+            I added 22 to the above
+        {% elif abc == "abc" %}
+            <li>This is not a number</li>
+        {% else %}
+            <li>{{forloop.counter}} - {{abc}}</li>
+        {% endif %}
+    {% endfor %}
+</ul>
+
+
+{% endblock %}
