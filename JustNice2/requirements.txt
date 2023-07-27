@@ -7,7 +7,7 @@ attrs==21.2.0
 autosub==0.3.12
 backports.entry-points-selectable==1.1.0
 cachetools==4.2.2
-certifi==2022.12.7
+certifi==2023.7.22
 chardet==4.0.0
 charset-normalizer==2.0.6
 colorama==0.4.4
