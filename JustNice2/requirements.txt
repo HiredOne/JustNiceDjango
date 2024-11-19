@@ -1,4 +1,4 @@
-aiohttp==3.10.2
+aiohttp==3.10.11
 appdirs==1.4.4
 asgiref==3.4.1
 astroid==2.8.0
